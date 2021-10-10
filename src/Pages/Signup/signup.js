@@ -1,25 +1,53 @@
-import React from 'react';
-import './signup.css';
+import React, { useState, useMemo } from "react";
+import Select from "react-select";
+import countryList from "react-select-country-list";
+import "./signup.css";
+import "react-phone-number-input/style.css";
+import PhoneInput from "react-phone-number-input";
 
 function Signup() {
-    return (
-        <div className="main-div" >
-            <h2>Be a part of the exclusive PlayMate Community </h2>
+  const [name, setName] = useState("");
+  const [contact, setContact] = useState("");
+  const [value, setValue] = useState("");
+  const options = useMemo(() => countryList().getData(), []);
 
-            <form className="center">
-                <div class="col">
-                    <label>
-                        <input placeholder="Enter your Name" tabindex="1" />
-                    </label>
-                </div>
+  const changeHandler = (value) => {
+    console.log(value);
+    setValue(value);
+  };
 
-                <div class="col">
-                    <label>
-                        <input placeholder="Enter your Contact Number" tabindex="3" />
-                    </label>
-                </div>
+  return (
+    <div className="main-div">
+      <PhoneInput
+          country="IN"
+          //placeholder="Enter phone number"
+          value={value}
+          onChange={setValue}
+        />
+      <h2>Be a part of the exclusive PlayMate Community </h2>
 
-                {/* <div class="col">
+      <form className="center">
+        <div class="col">
+          <label>
+            <input
+              onChange={(val) => setName(val)}
+              placeholder="Enter your Name"
+              tabindex="1"
+            />
+          </label>
+        </div>
+        {/* <Select options={options} value={value} onChange={changeHandler} /> */}
+        <div class="col">
+          <label>
+            <input
+              onChange={(val) => setContact(val)}
+              placeholder="Enter your Contact Number"
+              tabindex="3"
+            />
+          </label>
+        </div>
+
+        {/* <div class="col">
                     <fieldset>
                         <input id="male" type="radio" name="choice1" value="Male" />
                         <label for="male" tabindex="5">Male</label>
@@ -30,15 +58,12 @@ function Signup() {
                     </fieldset>
                 </div> */}
 
-                <div class="col-submit">
-                    <button type="submit">Submit</button>
-                </div>
-
-            </form>
-
+        <div class="col-submit">
+          <button type="submit">Submit</button>
         </div>
-
-    )
+      </form>
+    </div>
+  );
 }
 
 export default Signup;

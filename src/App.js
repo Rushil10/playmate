@@ -3,6 +3,8 @@ import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./Pages/Home/home";
 import { initializeApp } from 'firebase/app';
+import Signup from "./Pages/Signup/signup";
+import Signup2 from './Pages/Signup2/signup2'
 
 const firebaseConfig = {
   apiKey: "AIzaSyBlz4RUWLWoNRcoqwSXtZCZtvpABQ6eY-k",
@@ -15,8 +17,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-import Signup from "./Pages/Signup/signup";
-
 
 function App() {
   return (
@@ -26,8 +26,11 @@ function App() {
           <Route exact path="/">
             <Home />
           </Route>
-          <Route path="/signup">
+          {/* <Route path="/signup">
             <Signup />
+          </Route> */}
+          <Route path="/signup2">
+            <Signup2 />
           </Route>
         </Switch>
       </Router>

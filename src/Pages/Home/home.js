@@ -42,7 +42,7 @@ function Home() {
     e.preventDefault();
     const auth = getAuth();
     //configureCaptcha();
-    const phoneNumber = "+918169846575";
+    const phoneNumber = "+919324033123";
     const appVerifier = window.recaptchaVerifier;
     console.log("hmmmm");
     signInWithPhoneNumber(auth, phoneNumber, appVerifier)
