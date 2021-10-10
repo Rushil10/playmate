@@ -2,6 +2,19 @@ import logo from "./logo.svg";
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./Pages/Home/home";
+import { initializeApp } from 'firebase/app';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBlz4RUWLWoNRcoqwSXtZCZtvpABQ6eY-k",
+  authDomain: "playmate-29949.firebaseapp.com",
+  projectId: "playmate-29949",
+  storageBucket: "playmate-29949.appspot.com",
+  messagingSenderId: "616087980787",
+  appId: "1:616087980787:web:3d9110379df7d776268586"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 
 function App() {
   return (
