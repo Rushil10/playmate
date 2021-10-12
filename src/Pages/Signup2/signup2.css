@@ -15,9 +15,9 @@
   --gutterLg: 0.8rem;
   --gutterXl: 0.8rem;
   --gutterXx: 0.8rem;
-  --colorPrimary400: #7e57c2;
-  --colorPrimary600: #5e35b1;
-  --colorPrimary800: #4527a0;
+  --colorPrimary400: #96e4df;
+  --colorPrimary600: #4dccc6;
+  --colorPrimary800: #9eabe4;
   --fontFamily: "Dosis", sans-serif;
   --fontSizeSm: 1rem;
   --fontSizeMd: 1rem;
@@ -54,8 +54,7 @@
 
 .Input {
   position: relative;
-  margin-bottom: 25px;
-  margin-top: 25px;
+  margin-top: 19px;
   margin-right: 25px;
 }
 
