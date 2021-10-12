@@ -24,7 +24,7 @@ function Home() {
   };
 
   React.useEffect(() => {
-    const auth = getAuth();
+    /* const auth = getAuth();
     window.recaptchaVerifier = new RecaptchaVerifier(
       "sign-in-button",
       {
@@ -35,7 +35,7 @@ function Home() {
         },
       },
       auth
-    );
+    ); */
   },[])
 
   const onSignInSubmit = (e) => {

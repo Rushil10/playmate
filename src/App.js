@@ -4,6 +4,9 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./Pages/Home/home";
 import { initializeApp } from "firebase/app";
 import Signup2 from "./Pages/Signup2/signup2";
+import VerifyOtp from "./Pages/VerifyOtp/verifyOtp";
+import themeFile from "./util/theme.js";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBlz4RUWLWoNRcoqwSXtZCZtvpABQ6eY-k",
@@ -16,21 +19,26 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
+const theme = createTheme(themeFile);
 function App() {
   return (
-    <div className="App">
-      <Router>
-        <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route path="/signup">
-            <Signup2 />
-          </Route>
-        </Switch>
-      </Router>
-    </div>
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        <Router>
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/signup">
+              <Signup2 />
+            </Route>
+            <Route path="/verifyOtp">
+              <VerifyOtp />
+            </Route>
+          </Switch>
+        </Router>
+      </div>
+    </ThemeProvider>
   );
 }
 

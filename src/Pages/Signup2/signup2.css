@@ -4,8 +4,25 @@
     background-color:aliceblue;
 }
 
+.errorLabel {
+  color: #1da1f2;
+}
+
 .logoStyle {
-  border-radius: 5px;
+  display: block;
+  text-align: center;
+}
+
+.centerText {
+  text-align: center;
+}
+
+.otpInputStyle {
+  width: 3rem;
+  height: 2.5rem;
+  margin: 0 1rem;
+  font-size: 2rem;
+  border-radius: 4px;
 }
 
 :root {
@@ -46,7 +63,7 @@
 
 .signupSpace {
   align-items: center;
-  background-color: white;
+  background-color: #ECF3F3;
   padding:25px;
   margin-top: 25px;
   border-radius: 15px;
@@ -120,6 +137,6 @@
   display: flex;
   flex:1;
   flex-direction: column;
-  background: #ECF3F3;
+  background: white;
   align-items: center;
 }
