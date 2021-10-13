@@ -16,6 +16,9 @@ import OtpInput from "react-otp-input";
 import { FormLabel } from "@mui/material";
 import url from "../../config/api";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
+import { setPlayerData } from "../../redux/player/playerActions";
+import store from "../../redux/store";
 
 function Signup() {
   const [phone, setPhone] = useState("");
@@ -121,6 +124,8 @@ function Signup() {
           .then((result) => {
             console.log(result.data);
             localStorage.setItem("playerToken", result.data.token);
+            store.dispatch(setPlayerData(result.data.token))
+            history.push({pathname:'/'})
             setVerifying(false);
           })
           .catch((err) => {

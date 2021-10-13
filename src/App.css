@@ -1,7 +1,8 @@
 .App {
+  margin-top: 41px;
   display:flex;
   flex:1;
-  height:100vh;
+  height:100%;
 }
 .App-logo {
   height: 40vmin;

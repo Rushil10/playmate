@@ -4,9 +4,12 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./Pages/Home/home";
 import { initializeApp } from "firebase/app";
 import Signup2 from "./Pages/Signup2/signup2";
-import VerifyOtp from "./Pages/VerifyOtp/verifyOtp";
 import themeFile from "./util/theme.js";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Navbar from "./Components/Navbar/navbar";
+import { Provider } from "react-redux";
+import store from "./redux/store";
+import { setPlayerData } from "./redux/player/playerActions";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBlz4RUWLWoNRcoqwSXtZCZtvpABQ6eY-k",
@@ -20,24 +23,30 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const theme = createTheme(themeFile);
+
+const token = localStorage.playerToken;
+if (token) {
+  store.dispatch(setPlayerData(token));
+}
+
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <div className="App">
-        <Router>
-          <Switch>
-            <Route exact path="/">
-              <Home />
-            </Route>
-            <Route path="/signup">
-              <Signup2 />
-            </Route>
-            <Route path="/verifyOtp">
-              <VerifyOtp />
-            </Route>
-          </Switch>
-        </Router>
-      </div>
+      <Provider store={store}>
+        <div className="App">
+          <Router>
+            <Navbar />
+            <Switch>
+              <Route exact path="/">
+                <Home />
+              </Route>
+              <Route path="/signup">
+                <Signup2 />
+              </Route>
+            </Switch>
+          </Router>
+        </div>
+      </Provider>
     </ThemeProvider>
   );
 }
