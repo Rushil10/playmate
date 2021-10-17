@@ -5,6 +5,7 @@ import {
   TextField,
   InputAdornment,
   Stack,
+  Button,
 } from "@mui/material";
 import React from "react";
 import Select from "react-select";
@@ -14,10 +15,10 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { DesktopDatePicker, TimePicker } from "@mui/lab";
 import DateAdapter from "@mui/lab/AdapterMoment";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
-} from "react-places-autocomplete";
+import districts from "../../Components/ConstantData/districts";
+import durations from "../../Components/ConstantData/duration";
+import axios from "axios";
+import { debounce } from "lodash";
 
 function CreateEvent(props) {
   const {
@@ -30,29 +31,74 @@ function CreateEvent(props) {
   const [sport, setSport] = React.useState(sports[0]);
   const [value, setValue] = React.useState(new Date());
   const [day, setDay] = React.useState(new Date());
-  const [venue, setVenue] = React.useState();
-  const [gmapsLoaded, setGmapsLoaded] = React.useState(false);
+  const [district, setDistrict] = React.useState("Mumbai");
+  const [duration, setDuration] = React.useState("1 hour");
+  const [locality, setLocality] = React.useState("");
+  const [places, setPlaces] = React.useState([]);
+  const [place, setPlace] = React.useState({});
+  const [token, setToken] = React.useState("");
 
-  // This is how you do componentDidMount() with React hooks
+  const getToken = () => {
+    const params = new URLSearchParams();
+    params.append("grant_type", "client_credentials");
+    params.append(
+      "client_id",
+      "33OkryzDZsKKHZtg80ha1RrkvYDPQFZw3_LrzA5DaNrL9q9bV-kRuwGGXpvbxGer4xj1Ol09sMGh2gxQwYMTQQ=="
+    );
+    params.append(
+      "client_secret",
+      "lrFxI-iSEg-flnVjCpxr4hkMN0ot7YbnIFVQ0Uu_Z--ojU8loNyHv5fxtDOWo4VXOV7eGZVDX90FBaHxRZTGQiumojKzI2IO"
+    );
+
+    const config = {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    };
+
+    axios
+      .post(
+        "https://outpost.mapmyindia.com/api/security/oauth/token",
+        params,
+        config
+      )
+      .then((res) => {
+        console.log(res.data.access_token);
+        setToken(res.data.access_token);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+
+  const getPlaces = (locality, token) => {
+    console.log("hiii", token);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    };
+    axios
+      .get(
+        `https://atlas.mapmyindia.com/api/places/search/json?query=${locality}`,
+        config
+      )
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+
+  const callSearch = (text) => {
+    console.log(text, "hiii");
+  };
+
   React.useEffect(() => {
-    window.initMap = () => setGmapsLoaded(true);
-    const gmapScriptEl = document.createElement(`script`);
-    gmapScriptEl.src = `https://maps.googleapis.com/maps/api/js?key=&libraries=places&callback=initMap`;
-    document
-      .querySelector(`body`)
-      .insertAdjacentElement(`beforeend`, gmapScriptEl);
+    getToken();
   }, []);
-
-  const handleSelect = (address) => {
-    geocodeByAddress(address)
-      .then((results) => getLatLng(results[0]))
-      .then((latLng) => console.log("Success", latLng))
-      .catch((error) => console.error("Error", error));
-  };
-
-  const handleChangeAddress = (address) => {
-    setVenue(address);
-  };
 
   const handleChangeDay = (value) => {
     setDay(value);
@@ -67,19 +113,41 @@ function CreateEvent(props) {
     console.log(selectedOption);
   };
 
+  const handleChangeDistrict = (selectedOption) => {
+    setDistrict(selectedOption);
+    console.log(selectedOption);
+  };
+
+  const handleChangeDuration = (selectedOption) => {
+    setDuration(selectedOption);
+    console.log(selectedOption);
+  };
+
+  const handler = React.useCallback(debounce(getPlaces, 200), []);
+
+  const handleChangeLocality = (e) => {
+    setLocality(e.target.value);
+    console.log(token);
+    if (e.target.value.length > 0) {
+      console.log("in if");
+      handler(e.target.value, token);
+    }
+  };
+
   return (
-    <Grid container marginTop={1} marginLeft={1}>
+    <Grid container marginTop={1} marginBottom={5} marginLeft={1}>
       <Grid container>
-        <Grid marginTop="2.5px" item xs={10} sm={2} md={2}>
+        {/* <Grid marginTop="2.5px" item xs={10} sm={2} md={2}>
           <Typography marginY="dense" variant="h6">
             Select Sport
           </Typography>
-        </Grid>
-        <Grid item xs={10} sm={4} md={4}>
+        </Grid> */}
+        <Grid item xs={10} sm={6} md={4}>
           <Select
             menuPortalTarget={document.body}
             styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
             value={sport}
+            placeholder="Select Sport"
             onChange={handleChangeSport}
             options={sports}
           />
@@ -89,7 +157,7 @@ function CreateEvent(props) {
         <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
           <Stack spacing={3} marginTop="21px">
             <Grid container spacing={2}>
-              <Grid item xs={10} sm={4} md={4}>
+              <Grid item xs={10} sm={5} md={4}>
                 <TextField
                   size="small"
                   variant="outlined"
@@ -105,7 +173,7 @@ function CreateEvent(props) {
                   helperText={errors?.totalPlayers?.message}
                 />
               </Grid>
-              <Grid item xs={10} sm={4} md={4}>
+              <Grid item xs={10} sm={5} md={4}>
                 <TextField
                   size="small"
                   variant="outlined"
@@ -122,7 +190,7 @@ function CreateEvent(props) {
                 />
               </Grid>
             </Grid>
-            <Grid item xs={10} sm={4} md={4}>
+            <Grid item xs={10} sm={5} md={4}>
               <TextField
                 size="small"
                 InputProps={{
@@ -143,7 +211,7 @@ function CreateEvent(props) {
                 helperText={errors?.price?.message}
               />
             </Grid>
-            <Grid item xs={10} sm={4} md={4}>
+            <Grid item xs={10} sm={5} md={4}>
               <LocalizationProvider dateAdapter={DateAdapter}>
                 <TimePicker
                   size="small"
@@ -154,66 +222,106 @@ function CreateEvent(props) {
                 />
               </LocalizationProvider>
             </Grid>
-            <Grid item xs={10} sm={4} md={4}>
+            <Grid item xs={10} sm={5} md={4}>
               <LocalizationProvider dateAdapter={DateAdapter}>
                 <DesktopDatePicker
                   label="Select Day"
-                  inputFormat="D MMMM yyyy"
+                  views={["year", "month", "day"]}
+                  //inputFormat="D MMMM yyyy"
                   value={day}
                   onChange={handleChangeDay}
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>
             </Grid>
+            {/* <Grid container >
+              <Grid item xs={10} sm={5} md={4}>
+                <TextField
+                  size="small"
+                  variant="outlined"
+                  fullWidth
+                  label="Venue Name / Turf Name"
+                  name="venue"
+                  {...register("venue", {
+                    required: "Venue / Turf Name Is Required",
+                  })}
+                  error={Boolean(errors ? errors.venue && errors.venue : false)}
+                  helperText={errors?.venue?.message}
+                />
+              </Grid>
+              <Grid marginLeft="19px" item xs={10} sm={5} md={4}>
+                <Select
+                  menuPortalTarget={document.body}
+                  styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+                  value={district}
+                  placeholder="Select Your District"
+                  onChange={handleChangeDistrict}
+                  options={districts}
+                />
+              </Grid>
+            </Grid> */}
             <Grid>
-              {gmapsLoaded && (
-                <PlacesAutocomplete
-                  value={venue}
-                  onChange={handleChangeAddress}
-                  onSelect={handleSelect}
-                >
-                  {({
-                    getInputProps,
-                    suggestions,
-                    getSuggestionItemProps,
-                    loading,
-                  }) => (
-                    <div>
-                      <input
-                        {...getInputProps({
-                          placeholder: "Search Places ...",
-                          className: "location-search-input",
-                        })}
-                      />
-                      <div className="autocomplete-dropdown-container">
-                        {loading && <div>Loading...</div>}
-                        {suggestions.map((suggestion) => {
-                          const className = suggestion.active
-                            ? "suggestion-item--active"
-                            : "suggestion-item";
-                          // inline style for demonstration purpose
-                          const style = suggestion.active
-                            ? { backgroundColor: "#fafafa", cursor: "pointer" }
-                            : { backgroundColor: "#ffffff", cursor: "pointer" };
-                          return (
-                            <div
-                              {...getSuggestionItemProps(suggestion, {
-                                className,
-                                style,
-                              })}
-                            >
-                              <span>{suggestion.description}</span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-                </PlacesAutocomplete>
-              )}
+              <Grid item xs={10} sm={5} md={4}>
+                <TextField
+                  size="small"
+                  variant="outlined"
+                  fullWidth
+                  label="Venue Name / Turf Name"
+                  name="venue"
+                  {...register("venue", {
+                    required: "Venue / Turf Name is Required",
+                  })}
+                  error={Boolean(errors ? errors.venue && errors.venue : false)}
+                  helperText={errors?.venue?.message}
+                />
+              </Grid>
+            </Grid>
+            <Grid>
+              <Grid item xs={10} sm={5} md={4}>
+                <TextField
+                  size="small"
+                  variant="outlined"
+                  fullWidth
+                  label="Search Locality / Landmark Near Your Venue"
+                  value={locality}
+                  onChange={handleChangeLocality}
+                />
+              </Grid>
+            </Grid>
+            <Grid>
+              <Grid item xs={10} sm={5} md={4}>
+                <TextField
+                  size="small"
+                  variant="outlined"
+                  fullWidth
+                  label="Average Age"
+                  name="age"
+                  {...register("age", {
+                    required: "Average Age is Required",
+                  })}
+                  error={Boolean(errors ? errors.age && errors.age : false)}
+                  helperText={errors?.age?.message}
+                />
+              </Grid>
+            </Grid>
+            <Grid>
+              <Grid item xs={10} sm={5} md={4}>
+                <Select
+                  menuPortalTarget={document.body}
+                  styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+                  value={duration}
+                  placeholder="Select Duration"
+                  onChange={handleChangeDuration}
+                  options={durations}
+                />
+              </Grid>
+            </Grid>
+            <Grid item xs={10} sm={6} md={4}>
+              <Button variant="contained" type="submit">
+                Organise My Event
+              </Button>
             </Grid>
           </Stack>
-          <input type="submit" />
         </form>
       </Grid>
     </Grid>
