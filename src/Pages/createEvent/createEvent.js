@@ -19,6 +19,7 @@ import districts from "../../Components/ConstantData/districts";
 import durations from "../../Components/ConstantData/duration";
 import axios from "axios";
 import { debounce } from "lodash";
+import './createEvent.css'
 
 function CreateEvent(props) {
   const {
@@ -80,12 +81,10 @@ function CreateEvent(props) {
       },
     };
     axios
-      .get(
-        `https://atlas.mapmyindia.com/api/places/search/json?query=${locality}`,
-        config
-      )
+      .get(`/places/search/json?query=${locality}`, config)
       .then((res) => {
-        console.log(res.data);
+        console.log(res.data.suggestedLocations);
+        setPlaces(res.data.suggestedLocations);
       })
       .catch((err) => {
         console.log(err.response);
@@ -123,7 +122,7 @@ function CreateEvent(props) {
     console.log(selectedOption);
   };
 
-  const handler = React.useCallback(debounce(getPlaces, 200), []);
+  const handler = React.useCallback(debounce(getPlaces, 2000), []);
 
   const handleChangeLocality = (e) => {
     setLocality(e.target.value);
@@ -133,6 +132,12 @@ function CreateEvent(props) {
       handler(e.target.value, token);
     }
   };
+
+  const onPressPlace = (place) => {
+    setPlace(place);
+    setLocality(place.placeName)
+    setPlaces([])
+  }
 
   return (
     <Grid container marginTop={1} marginBottom={5} marginLeft={1}>
@@ -286,6 +291,16 @@ function CreateEvent(props) {
                   value={locality}
                   onChange={handleChangeLocality}
                 />
+                <div className='search-container'>
+                  {places.map((place) => {
+                    return (
+                      <div role='button' onClick={() => onPressPlace(place)} className='placeContainer'>
+                        <h4 className='placeName'>{place.placeName}</h4>
+                        <text className="text-search-caption" >{place.placeAddress}</text>
+                      </div>
+                    );
+                  })}
+                </div>
               </Grid>
             </Grid>
             <Grid>

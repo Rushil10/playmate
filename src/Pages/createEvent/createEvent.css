@@ -1,0 +1,43 @@
+.search-container {
+    max-height: 250px;
+    overflow-y: scroll;
+}
+
+.text-search-caption {
+    overflow:hidden;
+}
+
+.placeName {
+    padding: 0px;
+    margin: 0px;
+    padding-top: 5px;
+}
+
+.placeContainer {
+    padding-left: 7px;
+    cursor: pointer;
+    padding-bottom: 5px;
+    border-bottom: 0.5px solid #d3d3d3;
+}
+
+.placeContainer:hover {
+    background-color: rgba(5, 145, 175,0.25);
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #ae7862;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
