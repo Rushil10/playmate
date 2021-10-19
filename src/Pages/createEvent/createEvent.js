@@ -19,7 +19,8 @@ import districts from "../../Components/ConstantData/districts";
 import durations from "../../Components/ConstantData/duration";
 import axios from "axios";
 import { debounce } from "lodash";
-import './createEvent.css'
+import "./createEvent.css";
+import mapUrl from "../../config/mapBoxApi";
 
 function CreateEvent(props) {
   const {
@@ -38,6 +39,7 @@ function CreateEvent(props) {
   const [places, setPlaces] = React.useState([]);
   const [place, setPlace] = React.useState({});
   const [token, setToken] = React.useState("");
+  const [additionalAddressInfo, setAdditionalAddressInfo] = React.useState("");
 
   const getToken = () => {
     const params = new URLSearchParams();
@@ -72,7 +74,7 @@ function CreateEvent(props) {
       });
   };
 
-  const getPlaces = (locality, token) => {
+/*   const getPlaces = (locality, token) => {
     console.log("hiii", token);
     const config = {
       headers: {
@@ -89,14 +91,22 @@ function CreateEvent(props) {
       .catch((err) => {
         console.log(err.response);
       });
-  };
+  }; */
+
+  const getPlaces = (locality, token) => {
+    axios.get(`${mapUrl}/${locality}.json?worldview=in&access_token=${token}`).then(res => {
+      setPlaces(res.data.features)
+    }).catch(err => {
+      console.log(err)
+    })
+  }
 
   const callSearch = (text) => {
     console.log(text, "hiii");
   };
 
   React.useEffect(() => {
-    getToken();
+    setToken("pk.eyJ1IjoicnVzaDEwIiwiYSI6ImNrbmFsZ2VnYzBrY3gydm9veGZic2RrcDMifQ.g3FCfKRsMhdIhqwxRNv4gQ")
   }, []);
 
   const handleChangeDay = (value) => {
@@ -122,6 +132,10 @@ function CreateEvent(props) {
     console.log(selectedOption);
   };
 
+  const handleChangeAdditionalAddressInfo = (e) => {
+    setAdditionalAddressInfo(e.target.value);
+  };
+
   const handler = React.useCallback(debounce(getPlaces, 2000), []);
 
   const handleChangeLocality = (e) => {
@@ -135,9 +149,9 @@ function CreateEvent(props) {
 
   const onPressPlace = (place) => {
     setPlace(place);
-    setLocality(place.placeName)
-    setPlaces([])
-  }
+    setLocality(place.text);
+    setPlaces([]);
+  };
 
   return (
     <Grid container marginTop={1} marginBottom={5} marginLeft={1}>
@@ -281,7 +295,7 @@ function CreateEvent(props) {
                 />
               </Grid>
             </Grid>
-            <Grid>
+            <Grid container>
               <Grid item xs={10} sm={5} md={4}>
                 <TextField
                   size="small"
@@ -291,17 +305,33 @@ function CreateEvent(props) {
                   value={locality}
                   onChange={handleChangeLocality}
                 />
-                <div className='search-container'>
+                <div className="search-container">
                   {places.map((place) => {
                     return (
-                      <div role='button' onClick={() => onPressPlace(place)} className='placeContainer'>
-                        <h4 className='placeName'>{place.placeName}</h4>
-                        <text className="text-search-caption" >{place.placeAddress}</text>
+                      <div
+                        role="button"
+                        onClick={() => onPressPlace(place)}
+                        className="placeContainer"
+                      >
+                        <h4 className="placeName">{place.text}</h4>
+                        <text className="text-search-caption">
+                          {place.place_name}
+                        </text>
                       </div>
                     );
                   })}
                 </div>
               </Grid>
+            </Grid>
+            <Grid item xs={10} sm={5} md={4}>
+              <TextField
+                size="small"
+                variant="outlined"
+                fullWidth
+                label="Additional Address Info (Optional)"
+                value={additionalAddressInfo}
+                onChange={handleChangeAdditionalAddressInfo}
+              />
             </Grid>
             <Grid>
               <Grid item xs={10} sm={5} md={4}>
