@@ -21,6 +21,7 @@ import axios from "axios";
 import { debounce } from "lodash";
 import "./createEvent.css";
 import mapUrl from "../../config/mapBoxApi";
+import api from "../../config/api";
 
 function CreateEvent(props) {
   const {
@@ -29,7 +30,43 @@ function CreateEvent(props) {
     register,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    console.log(data);
+    console.log(sport);
+    console.log(day);
+    console.log(duration);
+    console.log(value);
+    console.log(place);
+    var playerToken = localStorage.getItem("playerToken");
+    var event = {
+      total_players: data.totalPlayers,
+      rem_players: data.remPlayers,
+      price_per_person: Number(data.price),
+      venue: data.venue,
+      age: Number(data.age),
+      timings: value._d,
+      day: day._d,
+      sport: sport.label,
+      latitude: place.geometry.coordinates[0],
+      longitude: place.geometry.coordinates[1],
+      duration: duration.label,
+      additionalAddressInfo: additionalAddressInfo,
+    };
+    console.log(event);
+    console.log(playerToken);
+    var config = {
+      headers: { Authorization: `Bearer ${playerToken}` },
+      "Content-Type": "application/json",
+    };
+    axios
+      .post(`${api}/event/create`, config, event)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const [sport, setSport] = React.useState(sports[0]);
   const [value, setValue] = React.useState(new Date());
   const [day, setDay] = React.useState(new Date());
@@ -74,7 +111,7 @@ function CreateEvent(props) {
       });
   };
 
-/*   const getPlaces = (locality, token) => {
+  /*   const getPlaces = (locality, token) => {
     console.log("hiii", token);
     const config = {
       headers: {
@@ -94,19 +131,24 @@ function CreateEvent(props) {
   }; */
 
   const getPlaces = (locality, token) => {
-    axios.get(`${mapUrl}/${locality}.json?worldview=in&access_token=${token}`).then(res => {
-      setPlaces(res.data.features)
-    }).catch(err => {
-      console.log(err)
-    })
-  }
+    axios
+      .get(`${mapUrl}/${locality}.json?worldview=in&access_token=${token}`)
+      .then((res) => {
+        setPlaces(res.data.features);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const callSearch = (text) => {
     console.log(text, "hiii");
   };
 
   React.useEffect(() => {
-    setToken("pk.eyJ1IjoicnVzaDEwIiwiYSI6ImNrbmFsZ2VnYzBrY3gydm9veGZic2RrcDMifQ.g3FCfKRsMhdIhqwxRNv4gQ")
+    setToken(
+      "pk.eyJ1IjoicnVzaDEwIiwiYSI6ImNrbmFsZ2VnYzBrY3gydm9veGZic2RrcDMifQ.g3FCfKRsMhdIhqwxRNv4gQ"
+    );
   }, []);
 
   const handleChangeDay = (value) => {
