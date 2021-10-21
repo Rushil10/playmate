@@ -37,7 +37,6 @@ function CreateEvent(props) {
     console.log(duration);
     console.log(value);
     console.log(place);
-    var playerToken = localStorage.getItem("playerToken");
     var event = {
       total_players: data.totalPlayers,
       rem_players: data.remPlayers,
@@ -52,20 +51,7 @@ function CreateEvent(props) {
       duration: duration.label,
       additionalAddressInfo: additionalAddressInfo,
     };
-    console.log(event);
-    console.log(playerToken);
-    var config = {
-      headers: { Authorization: `Bearer ${playerToken}` },
-      "Content-Type": "application/json",
-    };
-    axios
-      .post(`${api}/event/create`, config, event)
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    addMyEvent(event);
   };
   const [sport, setSport] = React.useState(sports[0]);
   const [value, setValue] = React.useState(new Date());
@@ -78,6 +64,23 @@ function CreateEvent(props) {
   const [token, setToken] = React.useState("");
   const [additionalAddressInfo, setAdditionalAddressInfo] = React.useState("");
 
+  const addMyEvent = async (event) => {
+    var playerToken = localStorage.getItem("playerToken");
+    var config = {
+      headers: { Authorization: `Bearer ${playerToken}` },
+      "Content-Type": "application/json",
+    };
+    axios
+      .post(`${api}/event/create`, event, config)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  /*
   const getToken = () => {
     const params = new URLSearchParams();
     params.append("grant_type", "client_credentials");
@@ -110,8 +113,7 @@ function CreateEvent(props) {
         console.log(err.response);
       });
   };
-
-  /*   const getPlaces = (locality, token) => {
+   const getPlaces = (locality, token) => {
     console.log("hiii", token);
     const config = {
       headers: {
@@ -131,8 +133,9 @@ function CreateEvent(props) {
   }; */
 
   const getPlaces = (locality, token) => {
+    var text=locality.replace(" ",'%20')
     axios
-      .get(`${mapUrl}/${locality}.json?worldview=in&access_token=${token}`)
+      .get(`${mapUrl}/${locality}.json?access_token=${token}`)
       .then((res) => {
         setPlaces(res.data.features);
       })
