@@ -46,8 +46,13 @@ function CreateEvent(props) {
       timings: value._d,
       day: day._d,
       sport: sport.label,
-      latitude: place.geometry.coordinates[0],
-      longitude: place.geometry.coordinates[1],
+      location: {
+        type: "Point",
+        coordinates: [
+          place.geometry.coordinates[0],
+          place.geometry.coordinates[1],
+        ],
+      },
       duration: duration.label,
       additionalAddressInfo: additionalAddressInfo,
     };
@@ -133,7 +138,7 @@ function CreateEvent(props) {
   }; */
 
   const getPlaces = (locality, token) => {
-    var text=locality.replace(" ",'%20')
+    var text = locality.replace(" ", "%20");
     axios
       .get(`${mapUrl}/${locality}.json?access_token=${token}`)
       .then((res) => {
