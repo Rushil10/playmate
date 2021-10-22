@@ -19,6 +19,7 @@ import districts from "../../Components/ConstantData/districts";
 import durations from "../../Components/ConstantData/duration";
 import axios from "axios";
 import { debounce } from "lodash";
+import kick from "../../images/kick3.jpg";
 import "./createEvent.css";
 import mapUrl from "../../config/mapBoxApi";
 import api from "../../config/api";
@@ -204,61 +205,72 @@ function CreateEvent(props) {
   };
 
   return (
-    <Grid container marginTop={1} marginBottom={5} marginLeft={1}>
-      <Grid container>
-        {/* <Grid marginTop="2.5px" item xs={10} sm={2} md={2}>
-          <Typography marginY="dense" variant="h6">
-            Select Sport
-          </Typography>
-        </Grid> */}
-        <Grid item xs={10} sm={6} md={4}>
-          <Select
-            menuPortalTarget={document.body}
-            styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
-            value={sport}
-            placeholder="Select Sport"
-            onChange={handleChangeSport}
-            options={sports}
-          />
+    <>
+      <div className="backgroundImageContainer">
+        <img src={kick} className="kickImg" />
+      </div>
+      <Grid container marginTop="15px" marginBottom={5} marginLeft={1}>
+        <Grid container spacing={2}>
+          <Grid item xs={10} sm={6} md={4}>
+            <Select
+              menuPortalTarget={document.body}
+              styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+              value={sport}
+              placeholder="Select Sport"
+              onChange={handleChangeSport}
+              options={sports}
+            />
+          </Grid>
+          <Grid item xs={10} sm={5} md={4}>
+            <Select
+              menuPortalTarget={document.body}
+              styles={{
+                menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+              }}
+              value={duration}
+              placeholder="Select Duration"
+              onChange={handleChangeDuration}
+              options={durations}
+            />
+          </Grid>
         </Grid>
-      </Grid>
-      <Grid container>
         <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
-          <Stack spacing={3} marginTop="21px">
-            <Grid container spacing={2}>
-              <Grid item xs={10} sm={5} md={4}>
-                <TextField
-                  size="small"
-                  variant="outlined"
-                  fullWidth
-                  label="Total Players"
-                  name="totalPlayers"
-                  {...register("totalPlayers", {
-                    required: "Total Number Of Players Is Required",
-                  })}
-                  error={Boolean(
-                    errors ? errors.totalPlayers && errors.totalPlayers : false
-                  )}
-                  helperText={errors?.totalPlayers?.message}
-                />
-              </Grid>
-              <Grid item xs={10} sm={5} md={4}>
-                <TextField
-                  size="small"
-                  variant="outlined"
-                  fullWidth
-                  label="Players Needed"
-                  name="remPlayers"
-                  {...register("remPlayers", {
-                    required: "Remaining Number Of Players Is Required",
-                  })}
-                  error={Boolean(
-                    errors ? errors.remPlayers && errors.remPlayers : false
-                  )}
-                  helperText={errors?.remPlayers?.message}
-                />
-              </Grid>
+          {/* <Stack spacing={3} marginTop="21px"> */}
+          <Grid container marginTop="15px" spacing={2}>
+            <Grid item xs={10} sm={5} md={4}>
+              <TextField
+                size="small"
+                variant="outlined"
+                fullWidth
+                label="Total Players"
+                name="totalPlayers"
+                {...register("totalPlayers", {
+                  required: "Total Number Of Players Is Required",
+                })}
+                error={Boolean(
+                  errors ? errors.totalPlayers && errors.totalPlayers : false
+                )}
+                helperText={errors?.totalPlayers?.message}
+              />
             </Grid>
+            <Grid item xs={10} sm={5} md={4}>
+              <TextField
+                size="small"
+                variant="outlined"
+                fullWidth
+                label="Players Needed"
+                name="remPlayers"
+                {...register("remPlayers", {
+                  required: "Remaining Number Of Players Is Required",
+                })}
+                error={Boolean(
+                  errors ? errors.remPlayers && errors.remPlayers : false
+                )}
+                helperText={errors?.remPlayers?.message}
+              />
+            </Grid>
+          </Grid>
+          <Grid container marginTop="15px" spacing={2}>
             <Grid item xs={10} sm={5} md={4}>
               <TextField
                 size="small"
@@ -281,6 +293,22 @@ function CreateEvent(props) {
               />
             </Grid>
             <Grid item xs={10} sm={5} md={4}>
+              <TextField
+                size="small"
+                variant="outlined"
+                fullWidth
+                label="Average Age"
+                name="age"
+                {...register("age", {
+                  required: "Average Age is Required",
+                })}
+                error={Boolean(errors ? errors.age && errors.age : false)}
+                helperText={errors?.age?.message}
+              />
+            </Grid>
+          </Grid>
+          <Grid container spacing={2} marginTop="15px">
+            <Grid item xs={10} sm={5} md={2}>
               <LocalizationProvider dateAdapter={DateAdapter}>
                 <TimePicker
                   size="small"
@@ -291,7 +319,7 @@ function CreateEvent(props) {
                 />
               </LocalizationProvider>
             </Grid>
-            <Grid item xs={10} sm={5} md={4}>
+            <Grid item xs={10} sm={5} md={2}>
               <LocalizationProvider dateAdapter={DateAdapter}>
                 <DesktopDatePicker
                   label="Select Day"
@@ -303,75 +331,21 @@ function CreateEvent(props) {
                 />
               </LocalizationProvider>
             </Grid>
-            {/* <Grid container >
-              <Grid item xs={10} sm={5} md={4}>
-                <TextField
-                  size="small"
-                  variant="outlined"
-                  fullWidth
-                  label="Venue Name / Turf Name"
-                  name="venue"
-                  {...register("venue", {
-                    required: "Venue / Turf Name Is Required",
-                  })}
-                  error={Boolean(errors ? errors.venue && errors.venue : false)}
-                  helperText={errors?.venue?.message}
-                />
-              </Grid>
-              <Grid marginLeft="19px" item xs={10} sm={5} md={4}>
-                <Select
-                  menuPortalTarget={document.body}
-                  styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
-                  value={district}
-                  placeholder="Select Your District"
-                  onChange={handleChangeDistrict}
-                  options={districts}
-                />
-              </Grid>
-            </Grid> */}
-            <Grid>
-              <Grid item xs={10} sm={5} md={4}>
-                <TextField
-                  size="small"
-                  variant="outlined"
-                  fullWidth
-                  label="Venue Name / Turf Name"
-                  name="venue"
-                  {...register("venue", {
-                    required: "Venue / Turf Name is Required",
-                  })}
-                  error={Boolean(errors ? errors.venue && errors.venue : false)}
-                  helperText={errors?.venue?.message}
-                />
-              </Grid>
-            </Grid>
-            <Grid container>
-              <Grid item xs={10} sm={5} md={4}>
-                <TextField
-                  size="small"
-                  variant="outlined"
-                  fullWidth
-                  label="Search Locality / Landmark Near Your Venue"
-                  value={locality}
-                  onChange={handleChangeLocality}
-                />
-                <div className="search-container">
-                  {places.map((place) => {
-                    return (
-                      <div
-                        role="button"
-                        onClick={() => onPressPlace(place)}
-                        className="placeContainer"
-                      >
-                        <h4 className="placeName">{place.text}</h4>
-                        <text className="text-search-caption">
-                          {place.place_name}
-                        </text>
-                      </div>
-                    );
-                  })}
-                </div>
-              </Grid>
+          </Grid>
+          <Grid container marginTop="15px" spacing={2}>
+            <Grid item xs={10} sm={5} md={4}>
+              <TextField
+                size="small"
+                variant="outlined"
+                fullWidth
+                label="Venue Name / Turf Name"
+                name="venue"
+                {...register("venue", {
+                  required: "Venue / Turf Name is Required",
+                })}
+                error={Boolean(errors ? errors.venue && errors.venue : false)}
+                helperText={errors?.venue?.message}
+              />
             </Grid>
             <Grid item xs={10} sm={5} md={4}>
               <TextField
@@ -383,43 +357,44 @@ function CreateEvent(props) {
                 onChange={handleChangeAdditionalAddressInfo}
               />
             </Grid>
-            <Grid>
-              <Grid item xs={10} sm={5} md={4}>
-                <TextField
-                  size="small"
-                  variant="outlined"
-                  fullWidth
-                  label="Average Age"
-                  name="age"
-                  {...register("age", {
-                    required: "Average Age is Required",
-                  })}
-                  error={Boolean(errors ? errors.age && errors.age : false)}
-                  helperText={errors?.age?.message}
-                />
-              </Grid>
+          </Grid>
+          <Grid container marginTop="15px" spacing={2}>
+            <Grid item xs={10} sm={5} md={4}>
+              <TextField
+                size="small"
+                variant="outlined"
+                fullWidth
+                label="Search Locality / Landmark Near Your Venue"
+                value={locality}
+                onChange={handleChangeLocality}
+              />
+              <div className="search-container">
+                {places.map((place) => {
+                  return (
+                    <div
+                      role="button"
+                      onClick={() => onPressPlace(place)}
+                      className="placeContainer"
+                    >
+                      <h4 className="placeName">{place.text}</h4>
+                      <text className="text-search-caption">
+                        {place.place_name}
+                      </text>
+                    </div>
+                  );
+                })}
+              </div>
             </Grid>
-            <Grid>
-              <Grid item xs={10} sm={5} md={4}>
-                <Select
-                  menuPortalTarget={document.body}
-                  styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
-                  value={duration}
-                  placeholder="Select Duration"
-                  onChange={handleChangeDuration}
-                  options={durations}
-                />
-              </Grid>
-            </Grid>
-            <Grid item xs={10} sm={6} md={4}>
-              <Button variant="contained" type="submit">
-                Organise My Event
-              </Button>
-            </Grid>
-          </Stack>
+          </Grid>
+          <Grid marginTop="15px" item xs={10} sm={6} md={4}>
+            <Button variant="contained" type="submit">
+              Organise My Event
+            </Button>
+          </Grid>
+          {/* </Stack> */}
         </form>
       </Grid>
-    </Grid>
+    </>
   );
 }
 
