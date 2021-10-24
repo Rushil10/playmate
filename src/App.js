@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./Pages/Home/home";
 import { initializeApp } from "firebase/app";
 import Signup2 from "./Pages/Signup2/signup2";
+import Login from "./Pages/Login/login";
 import themeFile from "./util/theme.js";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Navbar from "./Components/Navbar/navbar";
@@ -42,6 +43,9 @@ function App() {
               </Route>
               <Route path="/signup">
                 <Signup2 />
+              </Route>
+              <Route path="/login">
+                <Login />
               </Route>
             </Switch>
           </Router>
