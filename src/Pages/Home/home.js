@@ -1,70 +1,67 @@
-import React from "react";
+import React, { useState } from "react";
 import {
-  getAuth,
-  RecaptchaVerifier,
-  signInWithPhoneNumber,
-} from "firebase/auth";
+  Grid,
+  Typography,
+  Input,
+  TextField,
+  InputAdornment,
+  Stack,
+  Button,
+  Paper,
+  Box,
+} from "@mui/material";
+import DatePickerModal from "../../Components/Modals/DatePickerModal";
+import "./home.css";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import moment from "moment";
 
 function Home() {
-  const handleClick = () => {};
+  const [openDatePicker, setOpenDatePicker] = useState(false);
+  const [dateVal, setDateVal] = useState(new Date());
 
-  const configureCaptcha = () => {
-    const auth = getAuth();
-    window.recaptchaVerifier = new RecaptchaVerifier(
-      "sign-in-button",
-      {
-        size: "invisible",
-        callback: (response) => {
-          // reCAPTCHA solved, allow signInWithPhoneNumber.
-          onSignInSubmit();
-        },
-      },
-      auth
-    );
+  const openDate = () => {
+    setOpenDatePicker(true);
   };
 
-  React.useEffect(() => {
-    /* const auth = getAuth();
-    window.recaptchaVerifier = new RecaptchaVerifier(
-      "sign-in-button",
-      {
-        size: "invisible",
-        callback: (response) => {
-          // reCAPTCHA solved, allow signInWithPhoneNumber.
-          onSignInSubmit();
-        },
-      },
-      auth
-    ); */
-  },[])
-
-  const onSignInSubmit = (e) => {
-    e.preventDefault();
-    const auth = getAuth();
-    //configureCaptcha();
-    const phoneNumber = "+919324033123";
-    const appVerifier = window.recaptchaVerifier;
-    console.log("hmmmm");
-    signInWithPhoneNumber(auth, phoneNumber, appVerifier)
-      .then((confirmationResult) => {
-        // SMS sent. Prompt user to type the code from the message, then sign the
-        // user in with confirmationResult.confirm(code).
-        console.log('otp has been sent !')
-        window.confirmationResult = confirmationResult;
-        // ...
-      })
-      .catch((error) => {
-        console.log('Otp not sent !')
-        // Error; SMS not sent
-        // ...
-      });
+  const closeDate = () => {
+    setOpenDatePicker(false);
   };
+
+  const changeDate = (newValue) => {
+    setDateVal(newValue)
+    closeDate()
+  }
 
   return (
-    <div>
-      <h4>Hello, The landing page of playmate ! 🧨🎇🧨</h4>
-      <button id="sign-in-button" onClick={onSignInSubmit}>Click</button>
-    </div>
+    <Grid container paddingLeft="15px" paddingRight="15px" spacing={2}>
+      <DatePickerModal dateVal={dateVal} changeDate={changeDate} open={openDatePicker} handleClose={closeDate} />
+      <Grid marginTop="15px" item xs={12} sm={8} order={{ xs: 2, sm: 1 }}>
+        <Grid container spacing={2}>
+          <Grid item>
+            <button onClick={openDate} className="filterButtonStyle">
+              <div className="columnFlex">
+                <text className="smallText smallMarginBottom">
+                  {moment(dateVal).format("MMM")}
+                </text>
+                <h4 className="noSpacing darkGreenColor">
+                  {moment(dateVal).format("DD ddd")}
+                </h4>
+              </div>
+              <ArrowDropDownIcon style={{color:'#29ab87'}} />
+            </button>
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid marginTop="15px" item xs={12} sm={4} order={{ xs: 1, sm: 2 }}>
+        <Paper variant="outlined" elevation={5}>
+          <Grid conatiner alignItems="center" justifyContent="center">
+            <Grid item alignItems="center" textAlign="center">
+              <h4>user</h4>
+            </Grid>
+          </Grid>
+        </Paper>
+      </Grid>
+    </Grid>
   );
 }
 
