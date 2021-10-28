@@ -11,6 +11,8 @@ import {
   Paper,
   Box,
   Avatar,
+  List,
+  ListItem,
 } from "@mui/material";
 import DatePickerModal from "../../Components/Modals/DatePickerModal";
 import "./home.css";
@@ -113,7 +115,14 @@ function Home() {
         open={openDatePicker}
         handleClose={closeDate}
       />
-      <Grid marginTop="15px" item xs={12} sm={9} order={{ xs: 2, sm: 1 }}>
+      <Grid
+        marginTop="15px"
+        item
+        xs={12}
+        sm={8}
+        md={10}
+        order={{ xs: 2, sm: 1 }}
+      >
         <Grid alignItems="center" container spacing={2}>
           <Grid item>
             <button onClick={openDate} className="filterButtonStyle">
@@ -162,8 +171,54 @@ function Home() {
             />
           </Grid>
         </Grid>
+        <Grid container>
+          <Paper
+          elevation={0}
+            style={{
+              height: "79vh",
+              marginTop: 15,
+              width: "100%",
+              overflow: "auto",
+              borderBottomWidth:0
+            }}
+          >
+            <h4>Hmmmmm</h4>
+            <h4>Hmmmmm</h4>
+            <h4>Hmmmmm</h4>
+            <h4>Hmmmmm</h4>
+            <h4>Hmmmmm</h4>
+            <h4>Hmmmmm</h4>
+            <h4>Hmmmmm</h4>
+            <h4>Hmmmmm</h4>
+            <h4>Hmmmmm</h4>
+            <h4>Hmmmmm</h4>
+            <h4>Hmmmmm</h4>
+            <h4>Hmmmmm</h4>
+            <h4>Hmmmmm</h4>
+            <h4>Hmmmmm</h4>
+            <h4>Hmmmmm</h4>
+            <h4>Hmmmmm</h4>
+            <h4>Hmmmmm</h4>
+            <h4>Hmmmmm</h4>
+            <h4>Hmmmmm</h4>
+            <h4>Hmmmmm</h4>
+            <h4>Hmmmmm</h4>
+            <h4>Hmmmmm</h4>
+            <h4>Hmmmmm</h4>
+            <h4>Hmmmmm</h4>
+            <h4>Hmmmmm</h4>
+            <h4>Hmmmmm</h4>
+          </Paper>
+        </Grid>
       </Grid>
-      <Grid marginTop="15px" item xs={12} sm={3} order={{ xs: 1, sm: 2 }}>
+      <Grid
+        marginTop="15px"
+        item
+        xs={12}
+        sm={4}
+        md={2}
+        order={{ xs: 1, sm: 2 }}
+      >
         <Paper variant="outlined" elevation={5}>
           <Grid conatiner>
             {authenticated && (
