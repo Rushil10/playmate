@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-comment-textnodes */
 import React, { useState } from "react";
 import {
   Grid,
@@ -9,6 +10,7 @@ import {
   Button,
   Paper,
   Box,
+  Avatar,
 } from "@mui/material";
 import DatePickerModal from "../../Components/Modals/DatePickerModal";
 import "./home.css";
@@ -18,6 +20,8 @@ import sports from "../../Components/ConstantData/sports";
 import Select from "react-select";
 import { ageGroups } from "../../Components/ConstantData/ageGroups";
 import genders from "../../Components/ConstantData/gender";
+import { useSelector } from "react-redux";
+import useWindowDimensions from "../../Components/useWindowDimensions";
 
 function Home() {
   const [openDatePicker, setOpenDatePicker] = useState(false);
@@ -25,6 +29,9 @@ function Home() {
   const [sport, setSport] = useState("");
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
+  const authenticated = useSelector((state) => state.player.authenticated);
+  const user = useSelector((state) => state.player.user);
+  const { height, width } = useWindowDimensions();
 
   const openDate = () => {
     setOpenDatePicker(true);
@@ -66,13 +73,20 @@ function Home() {
       backgroundColor: "rgba(64,224,208,0.05)",
       borderRadius: "25px",
       boxShadow: "none",
+      "&:hover": {
+        color: "#29ab87",
+      },
       /* // This line disable the blue border
       boxShadow: "0.5px solid #29ab87",*/
+    }),
+    dropdownIndicator: (base) => ({
+      ...base,
+      color: "#29ab87",
     }),
     singleValue: (provided) => ({
       ...provided,
       color: "#29ab87",
-      fontWeight: "400",
+      fontWeight: "bold",
     }),
     /* control: (styles) => ({
       ...styles,
@@ -82,6 +96,12 @@ function Home() {
       ...provided,
       color: state.isSelected ? "#29ab87" : "black",
       backgroundColor: state.isSelected ? "rgba(64,224,208,0.05)" : "white",
+      fontWeight: state.isSelected ? "bold" : "normal",
+      "&:hover": {
+        borderColor: "#29ab87",
+        color: "#29ab87",
+        backgroundColor: "rgba(173, 216, 230,0.15)",
+      },
     }),
   };
 
@@ -93,7 +113,7 @@ function Home() {
         open={openDatePicker}
         handleClose={closeDate}
       />
-      <Grid marginTop="15px" item xs={12} sm={8} order={{ xs: 2, sm: 1 }}>
+      <Grid marginTop="15px" item xs={12} sm={9} order={{ xs: 2, sm: 1 }}>
         <Grid alignItems="center" container spacing={2}>
           <Grid item>
             <button onClick={openDate} className="filterButtonStyle">
@@ -108,7 +128,7 @@ function Home() {
               <ArrowDropDownIcon style={{ color: "#29ab87" }} />
             </button>
           </Grid>
-          <Grid item>
+          <Grid minWidth="150px" item>
             <Select
               styles={colourStyles}
               menuPortalTarget={document.body}
@@ -143,12 +163,41 @@ function Home() {
           </Grid>
         </Grid>
       </Grid>
-      <Grid marginTop="15px" item xs={12} sm={4} order={{ xs: 1, sm: 2 }}>
+      <Grid marginTop="15px" item xs={12} sm={3} order={{ xs: 1, sm: 2 }}>
         <Paper variant="outlined" elevation={5}>
-          <Grid conatiner alignItems="center" justifyContent="center">
-            <Grid item alignItems="center" textAlign="center">
-              <h4>user</h4>
-            </Grid>
+          <Grid conatiner>
+            {authenticated && (
+              <Grid
+                container
+                paddingTop="15px"
+                paddingBottom="15px"
+                spacing={2}
+              >
+                <Grid textAlign="center" item xs={4} sm={12}>
+                  <img
+                    alt="user"
+                    src={user.image}
+                    style={{
+                      height: width / 9,
+                      width: width / 9,
+                      borderRadius: width / 18,
+                      resize: "cover",
+                      minWidth: 85,
+                      minHeight: 85,
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={8} sm={12}>
+                  <Grid container>
+                    <Grid item xs={0} sm={4}></Grid>
+                    <Grid item textAlign="center" xs={0} sm={4}>
+                      <Typography variant="h5">{user.name}</Typography>
+                    </Grid>
+                    <Grid item xs={0} sm={4}></Grid>
+                  </Grid>
+                </Grid>
+              </Grid>
+            )}
           </Grid>
         </Paper>
       </Grid>
