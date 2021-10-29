@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
-import React, { useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import {
   Grid,
   Typography,
@@ -24,6 +24,9 @@ import { ageGroups } from "../../Components/ConstantData/ageGroups";
 import genders from "../../Components/ConstantData/gender";
 import { useSelector } from "react-redux";
 import useWindowDimensions from "../../Components/useWindowDimensions";
+import { SIZE } from "../../Components/ConstantData/apiConstants";
+import store from "../../redux/store";
+import { getEventsNearMe } from "../../redux/events/eventActions";
 
 function Home() {
   const [openDatePicker, setOpenDatePicker] = useState(false);
@@ -34,6 +37,26 @@ function Home() {
   const authenticated = useSelector((state) => state.player.authenticated);
   const user = useSelector((state) => state.player.user);
   const { height, width } = useWindowDimensions();
+  const [page, setPage] = useState(1);
+
+  const callGetEvents = useCallback(
+    (filters) => store.dispatch(getEventsNearMe(filters)),
+    []
+  );
+
+  const getEventsInLocality = async () => {
+    var filter = {
+      longitude: 72.972478,
+      latitude: 19.126695,
+      size: SIZE,
+      page,
+    };
+    callGetEvents(filter);
+  };
+
+  useEffect(() => {
+    getEventsInLocality();
+  }, []);
 
   const openDate = () => {
     setOpenDatePicker(true);
@@ -120,7 +143,7 @@ function Home() {
         item
         xs={12}
         sm={8}
-        md={10}
+        md={9.5}
         order={{ xs: 2, sm: 1 }}
       >
         <Grid alignItems="center" container spacing={2}>
@@ -173,13 +196,13 @@ function Home() {
         </Grid>
         <Grid container>
           <Paper
-          elevation={0}
+            elevation={0}
             style={{
               height: "79vh",
               marginTop: 15,
               width: "100%",
               overflow: "auto",
-              borderBottomWidth:0
+              borderBottomWidth: 0,
             }}
           >
             <h4>Hmmmmm</h4>
@@ -216,7 +239,7 @@ function Home() {
         item
         xs={12}
         sm={4}
-        md={2}
+        md={2.5}
         order={{ xs: 1, sm: 2 }}
       >
         <Paper variant="outlined" elevation={5}>
