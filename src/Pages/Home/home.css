@@ -21,7 +21,43 @@
 }
 
 .smallMarginBottom {
-    margin-bottom: 1.5px;
+  margin-bottom: 1.5px;
+}
+
+.horizontalFilters::-webkit-scrollbar {
+  display: none;
+}
+
+.horizontalFilters {
+  overflow-x: scroll;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 5px;
+  margin-top: 7.5px;
+}
+
+@media screen and (min-width: 590px) {
+  .horizontalFilters {
+    margin-top: 15px;
+  }
+}
+
+.someSpaceBetween {
+  margin-left: 9px;
+}
+
+.sportMinWidth {
+  min-width: 95px;
+}
+
+.ageMinWidth {
+  min-width: 75px;
+}
+
+.genderMinWidth {
+  min-width: 95px;
 }
 
 .smallText {
@@ -49,4 +85,3 @@
 .flex-no-shrink {
   flex-shrink: 0;
 }
-

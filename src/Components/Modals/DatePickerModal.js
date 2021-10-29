@@ -3,6 +3,7 @@ import { Box, Grid, /* Modal */ TextField } from "@mui/material";
 import DateAdapter from "@mui/lab/AdapterMoment";
 import React from "react";
 import Modal from "react-modal";
+import Calendar from "react-calendar";
 
 const customStyles = {
   content: {
@@ -28,8 +29,8 @@ function DatePickerModal(props) {
       <Grid container>
         <LocalizationProvider dateAdapter={DateAdapter}>
           <StaticDatePicker
-            displayStaticWrapperAs="desktop"
-            label="Week picker"
+            displayStaticWrapperAs="mobile"
+            label="Date Picker"
             value={props.dateVal}
             onChange={(newValue) => props.changeDate(newValue)}
             renderInput={(params) => <TextField {...params} />}

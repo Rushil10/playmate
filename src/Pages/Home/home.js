@@ -27,6 +27,7 @@ import useWindowDimensions from "../../Components/useWindowDimensions";
 import { SIZE } from "../../Components/ConstantData/apiConstants";
 import store from "../../redux/store";
 import { getEventsNearMe } from "../../redux/events/eventActions";
+import EventCard from "../../Components/EventCard/EventCard";
 
 function Home() {
   const [openDatePicker, setOpenDatePicker] = useState(false);
@@ -38,11 +39,21 @@ function Home() {
   const user = useSelector((state) => state.player.user);
   const { height, width } = useWindowDimensions();
   const [page, setPage] = useState(1);
+  const [fetchedEvents, setFetchedEvents] = useState([]);
 
   const callGetEvents = useCallback(
     (filters) => store.dispatch(getEventsNearMe(filters)),
     []
   );
+
+  const loading = useSelector((state) => state.event.loading);
+
+  const events = useSelector((state) => state.event.events);
+
+  useEffect(() => {
+    console.log(events);
+    setFetchedEvents(events);
+  }, [events]);
 
   const getEventsInLocality = async () => {
     var filter = {
@@ -91,12 +102,13 @@ function Home() {
   };
 
   const colourStyles = {
-    menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+    menuPortal: (base) => ({ ...base, zIndex: 9999, minWidth: "105px" }),
     control: (base) => ({
       ...base,
       border: "0.75px solid #29ab87",
       backgroundColor: "rgba(64,224,208,0.05)",
       borderRadius: "25px",
+      height: "5px",
       boxShadow: "none",
       "&:hover": {
         color: "#29ab87",
@@ -107,11 +119,13 @@ function Home() {
     dropdownIndicator: (base) => ({
       ...base,
       color: "#29ab87",
+      paddingLeft: "1px",
     }),
     singleValue: (provided) => ({
       ...provided,
       color: "#29ab87",
       fontWeight: "bold",
+      fontSize: "13.5px",
     }),
     /* control: (styles) => ({
       ...styles,
@@ -146,7 +160,12 @@ function Home() {
         md={9.5}
         order={{ xs: 2, sm: 1 }}
       >
-        <Grid alignItems="center" container spacing={2}>
+        <Grid
+          spacing={{ xs: 1, sm: 2 }}
+          alignItems="center"
+          justifyContent="center"
+          container
+        >
           <Grid item>
             <button onClick={openDate} className="filterButtonStyle">
               <div className="columnFlex">
@@ -160,7 +179,48 @@ function Home() {
               <ArrowDropDownIcon style={{ color: "#29ab87" }} />
             </button>
           </Grid>
-          <Grid minWidth="150px" item>
+          <div className="horizontalFilters">
+            <Select
+              className="someSpaceBetween sportMinWidth"
+              styles={colourStyles}
+              menuPortalTarget={document.body}
+              //styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+              value={sport}
+              placeholder="Sport"
+              onChange={handleChangeSport}
+              options={sports}
+              components={{
+                IndicatorSeparator: () => null,
+              }}
+            />
+            <Select
+              className="someSpaceBetween ageMinWidth"
+              styles={colourStyles}
+              menuPortalTarget={document.body}
+              //styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+              value={age}
+              placeholder="Age"
+              onChange={handleChangeAge}
+              options={ageGroups(65)}
+              components={{
+                IndicatorSeparator: () => null,
+              }}
+            />
+            <Select
+              styles={colourStyles}
+              menuPortalTarget={document.body}
+              className="someSpaceBetween genderMinWidth"
+              //styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+              value={gender}
+              placeholder="Gender"
+              onChange={handleChangeGender}
+              options={genders}
+              components={{
+                IndicatorSeparator: () => null,
+              }}
+            />
+          </div>
+          {/* <Grid maxWidth="145px" item>
             <Select
               styles={colourStyles}
               menuPortalTarget={document.body}
@@ -169,6 +229,9 @@ function Home() {
               placeholder="Sport"
               onChange={handleChangeSport}
               options={sports}
+              components={{
+                IndicatorSeparator: () => null,
+              }}
             />
           </Grid>
           <Grid item>
@@ -180,6 +243,9 @@ function Home() {
               placeholder="Age"
               onChange={handleChangeAge}
               options={ageGroups(65)}
+              components={{
+                IndicatorSeparator: () => null,
+              }}
             />
           </Grid>
           <Grid item>
@@ -191,8 +257,11 @@ function Home() {
               placeholder="Gender"
               onChange={handleChangeGender}
               options={genders}
+              components={{
+                IndicatorSeparator: () => null,
+              }}
             />
-          </Grid>
+          </Grid> */}
         </Grid>
         <Grid container>
           <Paper
@@ -205,32 +274,10 @@ function Home() {
               borderBottomWidth: 0,
             }}
           >
-            <h4>Hmmmmm</h4>
-            <h4>Hmmmmm</h4>
-            <h4>Hmmmmm</h4>
-            <h4>Hmmmmm</h4>
-            <h4>Hmmmmm</h4>
-            <h4>Hmmmmm</h4>
-            <h4>Hmmmmm</h4>
-            <h4>Hmmmmm</h4>
-            <h4>Hmmmmm</h4>
-            <h4>Hmmmmm</h4>
-            <h4>Hmmmmm</h4>
-            <h4>Hmmmmm</h4>
-            <h4>Hmmmmm</h4>
-            <h4>Hmmmmm</h4>
-            <h4>Hmmmmm</h4>
-            <h4>Hmmmmm</h4>
-            <h4>Hmmmmm</h4>
-            <h4>Hmmmmm</h4>
-            <h4>Hmmmmm</h4>
-            <h4>Hmmmmm</h4>
-            <h4>Hmmmmm</h4>
-            <h4>Hmmmmm</h4>
-            <h4>Hmmmmm</h4>
-            <h4>Hmmmmm</h4>
-            <h4>Hmmmmm</h4>
-            <h4>Hmmmmm</h4>
+            {!loading &&
+              fetchedEvents.map((item, index) => (
+                <EventCard item={item} index={index} />
+              ))}
           </Paper>
         </Grid>
       </Grid>
