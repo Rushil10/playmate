@@ -103,18 +103,25 @@ function Home() {
 
   const colourStyles = {
     menuPortal: (base) => ({ ...base, zIndex: 9999, minWidth: "105px" }),
-    control: (base) => ({
-      ...base,
+    control: (provided, state) => ({
+      ...provided,
+      background: "#fff",
       border: "0.75px solid #29ab87",
       backgroundColor: "rgba(64,224,208,0.05)",
+      borderColor: "#9e9e9e",
+      minHeight: "30px",
+      height: "30px",
       borderRadius: "25px",
-      height: "5px",
       boxShadow: "none",
       "&:hover": {
         color: "#29ab87",
       },
-      /* // This line disable the blue border
-      boxShadow: "0.5px solid #29ab87",*/
+      fontSize: "14px",
+    }),
+    valueContainer: (provided, state) => ({
+      ...provided,
+      height: "30px",
+      padding: "0 5px",
     }),
     dropdownIndicator: (base) => ({
       ...base,
@@ -125,12 +132,8 @@ function Home() {
       ...provided,
       color: "#29ab87",
       fontWeight: "bold",
-      fontSize: "13.5px",
+      fontSize: "14px",
     }),
-    /* control: (styles) => ({
-      ...styles,
-      backgroundColor: "white",
-    }), */
     option: (provided, state) => ({
       ...provided,
       color: state.isSelected ? "#29ab87" : "black",
@@ -141,6 +144,17 @@ function Home() {
         color: "#29ab87",
         backgroundColor: "rgba(173, 216, 230,0.15)",
       },
+    }),
+    input: (provided, state) => ({
+      ...provided,
+      margin: "0px",
+    }),
+    indicatorSeparator: (state) => ({
+      display: "none",
+    }),
+    indicatorsContainer: (provided, state) => ({
+      ...provided,
+      height: "30px",
     }),
   };
 
@@ -153,121 +167,76 @@ function Home() {
         handleClose={closeDate}
       />
       <Grid
-        marginTop="15px"
         item
         xs={12}
         sm={8}
         md={9.5}
         order={{ xs: 2, sm: 1 }}
       >
-        <Grid
-          spacing={{ xs: 1, sm: 2 }}
-          alignItems="center"
-          justifyContent="center"
-          container
-        >
-          <Grid item>
-            <button onClick={openDate} className="filterButtonStyle">
-              <div className="columnFlex">
-                <text className="smallText smallMarginBottom">
-                  {moment(dateVal).format("MMM")}
-                </text>
-                <h4 className="noSpacing darkGreenColor">
-                  {moment(dateVal).format("DD ddd")}
-                </h4>
-              </div>
-              <ArrowDropDownIcon style={{ color: "#29ab87" }} />
-            </button>
+        <div className="sticky">
+          <Grid
+            spacing={{ xs: 1, sm: 2 }}
+            alignItems="center"
+            justifyContent="center"
+            container
+          >
+            <Grid item>
+              <button onClick={openDate} className="filterButtonStyle">
+                <div className="columnFlex">
+                  <text className="smallText smallMarginBottom">
+                    {moment(dateVal).format("MMM")}
+                  </text>
+                  <h4 className="noSpacing darkGreenColor">
+                    {moment(dateVal).format("DD ddd")}
+                  </h4>
+                </div>
+                <ArrowDropDownIcon style={{ color: "#29ab87" }} />
+              </button>
+            </Grid>
+            <div className="horizontalFilters">
+              <Select
+                className="someSpaceBetween sportMinWidth"
+                styles={colourStyles}
+                menuPortalTarget={document.body}
+                value={sport}
+                placeholder="Sport"
+                onChange={handleChangeSport}
+                options={sports}
+                components={{
+                  IndicatorSeparator: () => null,
+                }}
+              />
+              <Select
+                className="someSpaceBetween ageMinWidth"
+                styles={colourStyles}
+                menuPortalTarget={document.body}
+                value={age}
+                placeholder="Age"
+                onChange={handleChangeAge}
+                options={ageGroups(65)}
+                components={{
+                  IndicatorSeparator: () => null,
+                }}
+              />
+              <Select
+                styles={colourStyles}
+                menuPortalTarget={document.body}
+                className="someSpaceBetween genderMinWidth"
+                value={gender}
+                placeholder="Gender"
+                onChange={handleChangeGender}
+                options={genders}
+                components={{
+                  IndicatorSeparator: () => null,
+                }}
+              />
+            </div>
           </Grid>
-          <div className="horizontalFilters">
-            <Select
-              className="someSpaceBetween sportMinWidth"
-              styles={colourStyles}
-              menuPortalTarget={document.body}
-              //styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
-              value={sport}
-              placeholder="Sport"
-              onChange={handleChangeSport}
-              options={sports}
-              components={{
-                IndicatorSeparator: () => null,
-              }}
-            />
-            <Select
-              className="someSpaceBetween ageMinWidth"
-              styles={colourStyles}
-              menuPortalTarget={document.body}
-              //styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
-              value={age}
-              placeholder="Age"
-              onChange={handleChangeAge}
-              options={ageGroups(65)}
-              components={{
-                IndicatorSeparator: () => null,
-              }}
-            />
-            <Select
-              styles={colourStyles}
-              menuPortalTarget={document.body}
-              className="someSpaceBetween genderMinWidth"
-              //styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
-              value={gender}
-              placeholder="Gender"
-              onChange={handleChangeGender}
-              options={genders}
-              components={{
-                IndicatorSeparator: () => null,
-              }}
-            />
-          </div>
-          {/* <Grid maxWidth="145px" item>
-            <Select
-              styles={colourStyles}
-              menuPortalTarget={document.body}
-              //styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
-              value={sport}
-              placeholder="Sport"
-              onChange={handleChangeSport}
-              options={sports}
-              components={{
-                IndicatorSeparator: () => null,
-              }}
-            />
-          </Grid>
-          <Grid item>
-            <Select
-              styles={colourStyles}
-              menuPortalTarget={document.body}
-              //styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
-              value={age}
-              placeholder="Age"
-              onChange={handleChangeAge}
-              options={ageGroups(65)}
-              components={{
-                IndicatorSeparator: () => null,
-              }}
-            />
-          </Grid>
-          <Grid item>
-            <Select
-              styles={colourStyles}
-              menuPortalTarget={document.body}
-              //styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
-              value={gender}
-              placeholder="Gender"
-              onChange={handleChangeGender}
-              options={genders}
-              components={{
-                IndicatorSeparator: () => null,
-              }}
-            />
-          </Grid> */}
-        </Grid>
+        </div>
         <Grid container>
           <Paper
             elevation={0}
             style={{
-              height: "79vh",
               marginTop: 15,
               width: "100%",
               overflow: "auto",
@@ -289,42 +258,44 @@ function Home() {
         md={2.5}
         order={{ xs: 1, sm: 2 }}
       >
-        <Paper variant="outlined" elevation={5}>
-          <Grid conatiner>
-            {authenticated && (
-              <Grid
-                container
-                paddingTop="15px"
-                paddingBottom="15px"
-                spacing={2}
-              >
-                <Grid textAlign="center" item xs={4} sm={12}>
-                  <img
-                    alt="user"
-                    src={user.image}
-                    style={{
-                      height: width / 9,
-                      width: width / 9,
-                      borderRadius: width / 18,
-                      resize: "cover",
-                      minWidth: 85,
-                      minHeight: 85,
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={8} sm={12}>
-                  <Grid container>
-                    <Grid item xs={0} sm={4}></Grid>
-                    <Grid item textAlign="center" xs={0} sm={4}>
-                      <Typography variant="h5">{user.name}</Typography>
+        <div className="user-sticky">
+          <Paper variant="outlined" elevation={5}>
+            <Grid conatiner>
+              {authenticated && (
+                <Grid
+                  container
+                  paddingTop="15px"
+                  paddingBottom="15px"
+                  spacing={2}
+                >
+                  <Grid textAlign="center" item xs={4} sm={12}>
+                    <img
+                      alt="user"
+                      src={user.image}
+                      style={{
+                        height: width / 9,
+                        width: width / 9,
+                        borderRadius: width / 18,
+                        resize: "cover",
+                        minWidth: 85,
+                        minHeight: 85,
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={8} sm={12}>
+                    <Grid container>
+                      <Grid item xs={0} sm={4}></Grid>
+                      <Grid item textAlign="center" xs={0} sm={4}>
+                        <Typography variant="h5">{user.name}</Typography>
+                      </Grid>
+                      <Grid item xs={0} sm={4}></Grid>
                     </Grid>
-                    <Grid item xs={0} sm={4}></Grid>
                   </Grid>
                 </Grid>
-              </Grid>
-            )}
-          </Grid>
-        </Paper>
+              )}
+            </Grid>
+          </Paper>
+        </div>
       </Grid>
     </Grid>
   );
