@@ -59,6 +59,7 @@
   position: sticky;
   background-color: white;
   top: 55px;
+  z-index: 10;
 }
 
 .someSpaceBetween {
