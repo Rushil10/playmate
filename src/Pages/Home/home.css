@@ -1,0 +1,52 @@
+.filterButtonStyle {
+  border: 0.5px solid #29ab87;
+  border-radius: 15px;
+  background-color: aliceblue;
+  padding-left: 9px;
+  padding-right: 9px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  display: flex;
+  flex-direction: row;
+}
+
+.columnFlex {
+  display: flex;
+  flex-direction: column;
+}
+
+.noSpacing {
+  padding: 0px;
+  margin: 0px;
+}
+
+.smallMarginBottom {
+    margin-bottom: 1.5px;
+}
+
+.smallText {
+  font-size: 12px;
+  text-align: left;
+}
+
+.darkGreenColor {
+  color: #29ab87;
+}
+
+.flex-section {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.flex-col-scroll {
+  flex-grow: 1;
+  overflow: auto;
+  min-height: 100%;
+}
+
+.flex-no-shrink {
+  flex-shrink: 0;
+}
+
