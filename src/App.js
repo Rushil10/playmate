@@ -10,7 +10,6 @@ import Navbar from "./Components/Navbar/navbar";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import { setPlayerData } from "./redux/player/playerActions";
-import CreateEvent from "./Pages/createEvent/createEvent";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBlz4RUWLWoNRcoqwSXtZCZtvpABQ6eY-k",
@@ -43,9 +42,6 @@ function App() {
               </Route>
               <Route path="/signup">
                 <Signup2 />
-              </Route>
-              <Route path="/create">
-                <CreateEvent />
               </Route>
             </Switch>
           </Router>
