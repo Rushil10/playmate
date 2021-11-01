@@ -18,7 +18,7 @@ import DatePickerModal from "../../Components/Modals/DatePickerModal";
 import "./home.css";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import moment from "moment";
-import sports from "../../Components/ConstantData/sports";
+import sports from "../../Components/ConstantData/sports2";
 import Select from "react-select";
 import { ageGroups } from "../../Components/ConstantData/ageGroups";
 import genders from "../../Components/ConstantData/gender";
@@ -65,6 +65,29 @@ function Home() {
     callGetEvents(filter);
   };
 
+  const getFilterEventsNearMe = async (sport, age, gender, dateVal) => {
+    var filter = {
+      longitude: 72.972478,
+      latitude: 19.126695,
+      size: SIZE,
+      page,
+    };
+    if (sport) {
+      filter.sport = sport.value;
+    }
+    if (age) {
+      filter.age = age.value;
+    }
+    if (gender) {
+      filter.gender = gender;
+    }
+    if (dateVal) {
+      filter.day = dateVal;
+    }
+    console.log(filter, "---------------------------------------");
+    callGetEvents(filter);
+  };
+
   useEffect(() => {
     getEventsInLocality();
   }, []);
@@ -79,25 +102,40 @@ function Home() {
 
   const changeDate = (newValue) => {
     setDateVal(newValue);
+    getFilterEventsNearMe(sport, age, gender, newValue);
     closeDate();
   };
 
   const handleChangeSport = (selectedOption) => {
+    if (selectedOption.value === "Remove") {
+      setSport("");
+      getFilterEventsNearMe(null, age, gender, dateVal);
+      return;
+    }
     setSport(selectedOption);
+    getFilterEventsNearMe(selectedOption, age, gender, dateVal);
     console.log(selectedOption);
   };
 
   const handleChangeAge = (selectedOption) => {
+    if (selectedOption.value === "Remove") {
+      setAge("");
+      getFilterEventsNearMe(sport, null, gender, dateVal);
+      return;
+    }
     setAge(selectedOption);
+    getFilterEventsNearMe(sport, selectedOption, gender, dateVal);
     console.log(selectedOption);
   };
 
   const handleChangeGender = (selectedOption) => {
     if (selectedOption.value === "Remove") {
       setGender("");
+      getFilterEventsNearMe(sport, age, null, dateVal);
       return;
     }
     setGender(selectedOption);
+    getFilterEventsNearMe(sport, age, selectedOption, dateVal);
     console.log(selectedOption);
   };
 
@@ -166,21 +204,18 @@ function Home() {
         open={openDatePicker}
         handleClose={closeDate}
       />
-      <Grid
-        item
-        xs={12}
-        sm={8}
-        md={9.5}
-        order={{ xs: 2, sm: 1 }}
-      >
+      <Grid item xs={12} sm={8} md={9.5} order={{ xs: 2, sm: 1 }}>
         <div className="sticky">
           <Grid
             spacing={{ xs: 1, sm: 2 }}
             alignItems="center"
             justifyContent="center"
             container
+            paddingBottom="5px"
+            borderBottom="0.5px solid #d4d4d4"
           >
-            <Grid item>
+            {/* <Grid item paddingTop="5px"> */}
+            <div className="dateStyling">
               <button onClick={openDate} className="filterButtonStyle">
                 <div className="columnFlex">
                   <text className="smallText smallMarginBottom">
@@ -192,7 +227,8 @@ function Home() {
                 </div>
                 <ArrowDropDownIcon style={{ color: "#29ab87" }} />
               </button>
-            </Grid>
+            </div>
+            {/* </Grid> */}
             <div className="horizontalFilters">
               <Select
                 className="someSpaceBetween sportMinWidth"

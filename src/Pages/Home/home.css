@@ -11,6 +11,11 @@
   margin-right: 7.5px;
 }
 
+.dateStyling {
+  margin-top: 7px;
+  margin-left: 11px;
+}
+
 .columnFlex {
   display: flex;
   flex-direction: column;
@@ -36,13 +41,13 @@
   flex-direction: row;
   align-items: center;
   padding-left: 7.5px;
-  margin-top: 7.5px;
+  margin-top: 5px;
   border-left: 1px solid #d3d3d3;
 }
 
 @media screen and (min-width: 590px) {
   .horizontalFilters {
-    margin-top: 15px;
+    margin-top: 5px;
     padding-left: 7.5px;
     border-left: 0px solid #d3d3d3;
   }
