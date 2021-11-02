@@ -1,6 +1,6 @@
 import { Button, Grid, Paper, Typography } from "@mui/material";
 import moment from "moment";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import location from "../../images/location.png";
 import schedule from "../../images/schedule.png";
 import chronometer from "../../images/chronometer.png";
@@ -10,6 +10,10 @@ import { styled } from "@mui/material/styles";
 import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
+import axios from "axios";
+import api from "../../config/api";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
@@ -44,6 +48,51 @@ venue: "Cricket Grnd Open"
 __v: 0
 _id: "617b806be6a2a45eba9860a2" */
   const { height, width } = useWindowDimensions();
+  const [rem_players, setRemPlayers] = useState(0);
+  const [joined, setJoined] = useState(false);
+  const user = useSelector((state) => state.player.user);
+  const history = useHistory();
+
+  const events = useSelector((state) => state.event.events);
+
+  useEffect(() => {
+    setJoined(false);
+    setRemPlayers(props.item.rem_players);
+    if (props.item.joinedPlayers && user && user._id) {
+      if (props.item.joinedPlayers.includes(user._id)) {
+        setJoined(true);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.item._id, events]);
+
+  const joinEvent = async () => {
+    var body = {
+      eventId: props.item._id,
+    };
+    var playerToken = localStorage.getItem("playerToken");
+    if (playerToken) {
+      var config = {
+        headers: { Authorization: `Bearer ${playerToken}` },
+        "Content-Type": "application/json",
+      };
+      axios
+        .post(`${api}/booking/joinEvent`, body, config)
+        .then((res) => {
+          console.log(res.data);
+          setRemPlayers(rem_players - 1);
+          setJoined(true);
+        })
+        .catch((err) => {
+          console.log(err.response.data);
+          if (err.response.data.error) {
+          }
+        });
+    } else {
+      history.push({ pathname: "/signup" });
+    }
+  };
+
   return (
     <Grid
       container
@@ -126,8 +175,15 @@ _id: "617b806be6a2a45eba9860a2" */
           </Typography>
         </Grid>
         <Grid item alignItems="center" textAlign="center" xs={4} md={7}>
-          <Button size="small" variant="contained">
-            {width < 450
+          <Button
+            disabled={joined}
+            onClick={joinEvent}
+            size="small"
+            variant="contained"
+          >
+            {joined
+              ? "Joined"
+              : width < 450
               ? "Join"
               : width < 650 && width > 600
               ? "Join"
@@ -135,9 +191,7 @@ _id: "617b806be6a2a45eba9860a2" */
           </Button>
         </Grid>
         <Grid item textAlign="center" xs={4} md={7}>
-          <Typography variant="subtitle">
-            ({props.item.rem_players} spots left)
-          </Typography>
+          <Typography variant="subtitle">({rem_players} spots left)</Typography>
         </Grid>
       </Grid>
       <Grid
@@ -150,7 +204,7 @@ _id: "617b806be6a2a45eba9860a2" */
         <BorderLinearProgress
           variant="determinate"
           value={
-            ((props.item.total_players - props.item.rem_players) /
+            ((props.item.total_players - rem_players) /
               props.item.total_players) *
             100
           }
