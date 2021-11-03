@@ -79,7 +79,7 @@ function Home() {
       filter.age = age.value;
     }
     if (gender) {
-      filter.gender = gender;
+      filter.gender = gender.value;
     }
     if (dateVal) {
       filter.day = dateVal;

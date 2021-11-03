@@ -9,6 +9,12 @@
   bottom: 0px;
 }
 
+@media screen and (max-width: 1200px) {
+  .backgroundImageContainer {
+    display: none;
+  }
+}
+
 .kickImg {
   height: 85vh;
   object-fit: cover;
