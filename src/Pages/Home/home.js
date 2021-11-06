@@ -28,6 +28,8 @@ import { SIZE } from "../../Components/ConstantData/apiConstants";
 import store from "../../redux/store";
 import { getEventsNearMe } from "../../redux/events/eventActions";
 import EventCard from "../../Components/EventCard/EventCard";
+import organize from "../../images/organize.png";
+import PlayerCard from "../../Components/PlayerCard/playerCard";
 
 function Home() {
   const [openDatePicker, setOpenDatePicker] = useState(false);
@@ -294,44 +296,7 @@ function Home() {
         md={2.5}
         order={{ xs: 1, sm: 2 }}
       >
-        <div className="user-sticky">
-          <Paper variant="outlined" elevation={5}>
-            <Grid conatiner>
-              {authenticated && (
-                <Grid
-                  container
-                  paddingTop="15px"
-                  paddingBottom="15px"
-                  spacing={2}
-                >
-                  <Grid textAlign="center" item xs={4} sm={12}>
-                    <img
-                      alt="user"
-                      src={user.image}
-                      style={{
-                        height: width / 9,
-                        width: width / 9,
-                        borderRadius: width / 18,
-                        resize: "cover",
-                        minWidth: 85,
-                        minHeight: 85,
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={8} sm={12}>
-                    <Grid container>
-                      <Grid item xs={0} sm={4}></Grid>
-                      <Grid item textAlign="center" xs={0} sm={4}>
-                        <Typography variant="h5">{user.name}</Typography>
-                      </Grid>
-                      <Grid item xs={0} sm={4}></Grid>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              )}
-            </Grid>
-          </Paper>
-        </div>
+        <PlayerCard />
       </Grid>
     </Grid>
   );

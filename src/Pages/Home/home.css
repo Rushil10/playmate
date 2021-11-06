@@ -51,12 +51,6 @@
     padding-left: 7.5px;
     border-left: 0px solid #d3d3d3;
   }
-  .user-sticky {
-    position: -webkit-sticky;
-    position: sticky;
-    background-color: white;
-    top: 70px;
-  }
 }
 
 .sticky {

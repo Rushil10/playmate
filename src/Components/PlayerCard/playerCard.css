@@ -1,0 +1,8 @@
+@media screen and (min-width: 590px) {
+  .user-sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    background-color: white;
+    top: 70px;
+  }
+}
