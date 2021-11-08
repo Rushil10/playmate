@@ -13,13 +13,53 @@ import {
   List,
   ListItem,
 } from "@mui/material";
+import store from "../../redux/store";
+import { useSelector } from "react-redux";
+import { getOrganizedEvents } from "../../redux/events/eventActions";
 import PlayerCard from "../../Components/PlayerCard/playerCard";
+import EventCard from "../../Components/EventCard/EventCard";
+import OrganizedEventCard from "../../Components/OrganizedEventCard/OrganizedEventCard";
 
 function OrganizedEvents(props) {
+  const callOrganizedEvents = useCallback(
+    () => store.dispatch(getOrganizedEvents()),
+    []
+  );
+  const [fetchedEvents, setFetchedEvents] = useState([]);
+
+  const organizedLoading = useSelector((state) => state.event.organizedLoading);
+
+  const organizedEvents = useSelector((state) => state.event.organizedEvents);
+
+  useEffect(() => {
+    console.log(organizedEvents);
+    setFetchedEvents(organizedEvents);
+  }, [organizedEvents]);
+
+  useEffect(() => {
+    callOrganizedEvents();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Grid container paddingLeft="15px" paddingRight="15px" spacing={2}>
       <Grid item xs={12} sm={8} md={9.5} order={{ xs: 2, sm: 1 }}>
-        <text>hiiii</text>
+        <Grid container>
+          <Paper
+            elevation={0}
+            style={{
+              marginTop: 15,
+              width: "100%",
+              overflow: "auto",
+              borderBottomWidth: 0,
+            }}
+          >
+            {!organizedLoading &&
+              fetchedEvents.map((item, index) => (
+                <OrganizedEventCard item={item} index={index} />
+              ))}
+          </Paper>
+        </Grid>
       </Grid>
       <Grid
         marginTop="15px"

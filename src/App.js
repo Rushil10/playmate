@@ -46,9 +46,10 @@ function App() {
               <Route path="/signup">
                 <Signup2 />
               </Route>
-              <Route path="/create">
+              <ProtectedRoute path="/create" component={CreateEvent} />
+              {/*               <Route path="/create">
                 <CreateEvent />
-              </Route>
+              </Route> */}
               <ProtectedRoute path="/organized" component={OrganizedEvents} />
             </Switch>
           </Router>
