@@ -13,6 +13,7 @@ import { setPlayerData } from "./redux/player/playerActions";
 import CreateEvent from "./Pages/createEvent/createEvent";
 import OrganizedEvents from "./Pages/OrganizedEvents/organizedEvents";
 import ProtectedRoute from "./Components/ProtectedRoute";
+import EventDetails from "./Pages/EventDetails/eventDetails";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBlz4RUWLWoNRcoqwSXtZCZtvpABQ6eY-k",
@@ -46,10 +47,8 @@ function App() {
               <Route path="/signup">
                 <Signup2 />
               </Route>
+              <ProtectedRoute path="/event/:id" component={EventDetails} />
               <ProtectedRoute path="/create" component={CreateEvent} />
-              {/*               <Route path="/create">
-                <CreateEvent />
-              </Route> */}
               <ProtectedRoute path="/organized" component={OrganizedEvents} />
             </Switch>
           </Router>

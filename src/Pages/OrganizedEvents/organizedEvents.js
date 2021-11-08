@@ -32,11 +32,12 @@ function OrganizedEvents(props) {
   const organizedEvents = useSelector((state) => state.event.organizedEvents);
 
   useEffect(() => {
-    console.log(organizedEvents);
+    //console.log(organizedEvents);
     setFetchedEvents(organizedEvents);
   }, [organizedEvents]);
 
   useEffect(() => {
+    console.log("Calling Organized Events");
     callOrganizedEvents();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

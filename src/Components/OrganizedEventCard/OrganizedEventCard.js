@@ -59,6 +59,10 @@ _id: "617b806be6a2a45eba9860a2" */
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.item._id, organizedEvents]);
 
+  const onPressDetails = () => {
+    history.push({ pathname: `/event/${props.item._id}` });
+  };
+
   return (
     <Grid
       container
@@ -141,7 +145,7 @@ _id: "617b806be6a2a45eba9860a2" */
           </Typography>
         </Grid>
         <Grid item alignItems="center" textAlign="center" xs={4} md={7}>
-          <Button size="small" variant="contained">
+          <Button onClick={onPressDetails} size="small" variant="contained">
             Details
           </Button>
         </Grid>

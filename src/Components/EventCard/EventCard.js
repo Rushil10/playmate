@@ -61,6 +61,8 @@ _id: "617b806be6a2a45eba9860a2" */
     if (props.item.joinedPlayers && user && user._id) {
       if (props.item.joinedPlayers.includes(user._id)) {
         setJoined(true);
+      } else if (user._id === props.item.organiserId) {
+        setJoined(true);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -182,7 +184,9 @@ _id: "617b806be6a2a45eba9860a2" */
             variant="contained"
           >
             {joined
-              ? "Joined"
+              ? user._id === props.item.organiserId
+                ? "Organiser"
+                : "Joined"
               : width < 450
               ? "Join"
               : width < 650 && width > 600
