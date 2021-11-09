@@ -57,7 +57,7 @@ _id: "617b806be6a2a45eba9860a2" */
   useEffect(() => {
     setRemPlayers(props.item.rem_players);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.item._id, organizedEvents]);
+  }, [props.item._id, organizedEvents, props.item.rem_players]);
 
   const onPressDetails = () => {
     history.push({ pathname: `/event/${props.item._id}` });
@@ -146,7 +146,7 @@ _id: "617b806be6a2a45eba9860a2" */
         </Grid>
         <Grid item alignItems="center" textAlign="center" xs={4} md={7}>
           <Typography>
-            {props.item.total_players - props.item.rem_players} Joined
+            {props.item.total_players - rem_players} Joined
           </Typography>
         </Grid>
         <Grid item textAlign="center" xs={4} md={7}>

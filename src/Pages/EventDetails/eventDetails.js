@@ -12,29 +12,52 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import EventDetailsCard from "../../Components/EventDetailsCard/EventDetailsCard";
+import JoinedPlayerCard from "../../Components/JoinedPlayerCard/JoinedPlayerCard";
 import OrganizedEventCard from "../../Components/OrganizedEventCard/OrganizedEventCard";
 import PlayerCard from "../../Components/PlayerCard/playerCard";
 import api from "../../config/api";
+import { useSelector } from "react-redux";
 
 function EventDetails() {
   const match = useParams();
   const [eventDetails, setEventDetails] = useState({});
   const [loading, setLoading] = useState(true);
   const [players, setPlayers] = useState([]);
-
+  const [isOrganiser, setIsOrganiser] = useState(false);
+  const user = useSelector((state) => state.player.user);
   const getEventDetails = () => {
     setLoading(true);
+    setIsOrganiser(false);
     axios
       .get(`${api}/event/${match.id}`)
       .then((res) => {
         console.log(res);
         setEventDetails(res.data.event);
+        if (user._id && res.data.event.organiserId === user._id) {
+          setIsOrganiser(true);
+        }
         setPlayers(res.data.players);
         setLoading(false);
       })
       .catch((error) => {
         console.log(error.response);
       });
+  };
+
+  const updateOnPlayerRemoval = (index, playerId) => {
+    var event = { ...eventDetails };
+    var rejects = [];
+    if (event.rejectedPlayersId) {
+      rejects = [...event.rejectedPlayersId];
+    }
+    rejects.push(playerId);
+    event.rem_players = event.rem_players + 1;
+    event.rejectedPlayersId = rejects;
+    console.log(event);
+    setEventDetails(event);
+    var allPlayers = [...players];
+    allPlayers.splice(index, 1);
+    setPlayers(allPlayers);
   };
 
   useEffect(() => {
@@ -62,6 +85,17 @@ function EventDetails() {
           <Grid item marginTop="9px">
             <Typography variant="h6">Joined Players</Typography>
           </Grid>
+        </Grid>
+        <Grid container>
+          {players.map((player, index) => (
+            <JoinedPlayerCard
+              eventId={match.id}
+              item={player}
+              index={index}
+              organiser={isOrganiser}
+              updateOnPlayerRemoval={updateOnPlayerRemoval}
+            />
+          ))}
         </Grid>
       </Grid>
       <Grid
