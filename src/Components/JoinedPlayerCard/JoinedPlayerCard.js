@@ -12,16 +12,27 @@ import {
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import RemovePlayerModal from "../RemovePlayerModal/RemovePlayerModal";
+import { useSelector } from "react-redux";
+import BackoutModal from "../BackOutModal/backoutModal";
 
 function JoinedPlayerCard(props) {
   const [openRemove, setOpenRemove] = useState(false);
-
+  const [openBackout, setOpenBackout] = useState(false);
+  const user = useSelector((state) => state.player.user);
   const closeRemove = () => {
     setOpenRemove(false);
   };
 
   const openRemoveModal = () => {
     setOpenRemove(true);
+  };
+
+  const closeBackout = () => {
+    setOpenBackout(false);
+  };
+
+  const openBackoutModal = () => {
+    setOpenBackout(true);
   };
 
   return (
@@ -35,6 +46,14 @@ function JoinedPlayerCard(props) {
       <RemovePlayerModal
         open={openRemove}
         handleClose={closeRemove}
+        player={props.item}
+        eventId={props.eventId}
+        index={props.index}
+        updateOnPlayerRemoval={props.updateOnPlayerRemoval}
+      />
+      <BackoutModal
+        open={openBackout}
+        handleClose={closeBackout}
         player={props.item}
         eventId={props.eventId}
         index={props.index}
@@ -62,6 +81,19 @@ function JoinedPlayerCard(props) {
           >
             <Button onClick={openRemoveModal} size="small" variant="contained">
               Remove
+            </Button>
+          </Grid>
+        )}
+        {user._id && user._id === props.item._id && (
+          <Grid
+            item
+            display="flex"
+            flex={1}
+            alignItems="center"
+            justifyContent="flex-end"
+          >
+            <Button onClick={openBackoutModal} size="small" variant="contained">
+              Backout
             </Button>
           </Grid>
         )}
