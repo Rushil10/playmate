@@ -16,6 +16,7 @@ import {
 import { useSelector } from "react-redux";
 import useWindowDimensions from "../useWindowDimensions";
 import organize from "../../images/organize.png";
+import friendship from "../../images/friendship.png";
 import "./playerCard.css";
 import { useHistory, useLocation } from "react-router-dom";
 
@@ -30,6 +31,12 @@ function PlayerCard(props) {
   const onPressOrganized = () => {
     if (location.pathname !== "/organized") {
       history.push({ pathname: "/organized" });
+    }
+  };
+
+  const onPressJoined = () => {
+    if (location.pathname !== "/joined") {
+      history.push({ pathname: "/joined" });
     }
   };
 
@@ -91,6 +98,39 @@ function PlayerCard(props) {
                         <Typography variant="title">
                           Organized Events
                         </Typography>
+                      </div>
+                    </button>
+                  </Grid>
+                  <Grid item xs={0} sm={1}></Grid>
+                </Grid>
+                <Grid container>
+                  <Grid item xs={0} sm={1}></Grid>
+                  <Grid item textAlign="center" xs={0} sm={10}>
+                    <button
+                      onClick={onPressJoined}
+                      style={{
+                        padding: 0,
+                        margin: 0,
+                        backgroundColor: "transparent",
+                        borderWidth: 0,
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          flex: 1,
+                          flexDirection: "row",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          marginTop: 5,
+                        }}
+                      >
+                        <img
+                          alt="friendship"
+                          src={friendship}
+                          style={{ height: 19.5, width: 19.5, marginRight: 5 }}
+                        />
+                        <Typography variant="title">Joined Events</Typography>
                       </div>
                     </button>
                   </Grid>

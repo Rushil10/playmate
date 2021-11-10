@@ -71,6 +71,7 @@ _id: "617b806be6a2a45eba9860a2" */
   const joinEvent = async () => {
     var body = {
       eventId: props.item._id,
+      eventDay: props.item.day,
     };
     var playerToken = localStorage.getItem("playerToken");
     if (playerToken) {

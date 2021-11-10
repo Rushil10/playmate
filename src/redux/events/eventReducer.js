@@ -2,6 +2,8 @@
 import {
   SET_EVENTS,
   SET_EVENTS_LOADING,
+  SET_JOINED_EVENTS,
+  SET_JOINED_LOADING,
   SET_ORGANIZED_EVENTS,
   SET_ORGANIZED_LOADING,
 } from "../types";
@@ -11,6 +13,8 @@ const initialState = {
   loading: true,
   organizedEvents: [],
   organizedLoading: true,
+  joinedEvents: [],
+  joinedLoading: true,
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -37,6 +41,17 @@ export default function (state = initialState, action) {
         ...state,
         organizedEvents: action.payload,
         organizedLoading: false,
+      };
+    case SET_JOINED_LOADING:
+      return {
+        ...state,
+        joinedLoading: action.payload,
+      };
+    case SET_JOINED_EVENTS:
+      return {
+        ...state,
+        joinedEvents: action.payload,
+        joinedLoading: false,
       };
     default:
       return state;
