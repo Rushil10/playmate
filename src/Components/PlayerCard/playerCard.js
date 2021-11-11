@@ -40,6 +40,18 @@ function PlayerCard(props) {
     }
   };
 
+  const onPressBackedOut = () => {
+    if (location.pathname !== "/backedOut") {
+      history.push({ pathname: "/backedOut" });
+    }
+  };
+
+  const onPressRejected = () => {
+    if (location.pathname !== "/rejected") {
+      history.push({ pathname: "/rejected" });
+    }
+  };
+
   return (
     <div className="user-sticky">
       <Paper variant="outlined" elevation={5}>
@@ -131,6 +143,72 @@ function PlayerCard(props) {
                           style={{ height: 19.5, width: 19.5, marginRight: 5 }}
                         />
                         <Typography variant="title">Joined Events</Typography>
+                      </div>
+                    </button>
+                  </Grid>
+                  <Grid item xs={0} sm={1}></Grid>
+                </Grid>
+                <Grid container>
+                  <Grid item xs={0} sm={1}></Grid>
+                  <Grid item textAlign="center" xs={0} sm={10}>
+                    <button
+                      onClick={onPressBackedOut}
+                      style={{
+                        padding: 0,
+                        margin: 0,
+                        backgroundColor: "transparent",
+                        borderWidth: 0,
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          flex: 1,
+                          flexDirection: "row",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          marginTop: 5,
+                        }}
+                      >
+                        <img
+                          alt="friendship"
+                          src={friendship}
+                          style={{ height: 19.5, width: 19.5, marginRight: 5 }}
+                        />
+                        <Typography variant="title">BackedOut Events</Typography>
+                      </div>
+                    </button>
+                  </Grid>
+                  <Grid item xs={0} sm={1}></Grid>
+                </Grid>
+                <Grid container>
+                  <Grid item xs={0} sm={1}></Grid>
+                  <Grid item textAlign="center" xs={0} sm={10}>
+                    <button
+                      onClick={onPressRejected}
+                      style={{
+                        padding: 0,
+                        margin: 0,
+                        backgroundColor: "transparent",
+                        borderWidth: 0,
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          flex: 1,
+                          flexDirection: "row",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          marginTop: 5,
+                        }}
+                      >
+                        <img
+                          alt="friendship"
+                          src={friendship}
+                          style={{ height: 19.5, width: 19.5, marginRight: 5 }}
+                        />
+                        <Typography variant="title">Rejected Events</Typography>
                       </div>
                     </button>
                   </Grid>

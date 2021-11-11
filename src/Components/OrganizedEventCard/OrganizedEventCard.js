@@ -169,6 +169,50 @@ _id: "617b806be6a2a45eba9860a2" */
           }
         />
       </Grid>
+      {
+        props.backedOut &&
+        <Grid item order={{ xs: 4, sm: 4 }} xs={12}>
+          <Grid container>
+            <Grid item xs={6}>
+              <Typography variant="body1">
+                Reason
+              </Typography>
+            </Grid>
+          </Grid>
+          <Grid item>
+            <Typography variant="subtitle">
+              {props.backedOut.cancellation_reason}
+            </Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="caption">
+              ~ {moment(props.backedOut.cancelledAt).format("DD MMM   hh:mm a")}
+            </Typography>
+          </Grid>
+        </Grid>
+      }
+      {
+        props.reject &&
+        <Grid item order={{ xs: 4, sm: 4 }} xs={12}>
+          <Grid container>
+            <Grid item xs={6}>
+              <Typography variant="body1">
+                Reason
+              </Typography>
+            </Grid>
+          </Grid>
+          <Grid item>
+            <Typography variant="subtitle">
+              {props.reject.rejection_reason}
+            </Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="caption">
+              ~ {moment(props.reject.rejectedAt).format("DD MMM   hh:mm a")}
+            </Typography>
+          </Grid>
+        </Grid>
+      }
     </Grid>
   );
 }

@@ -71,7 +71,7 @@ function JoinedPlayerCard(props) {
             <Typography variant="body2">+91 {props.item.contact}</Typography>
           </Grid>
         </Grid>
-        {props.organiser && (
+        {props.organiser && !props.reject && !props.backoutPlayer && (
           <Grid
             item
             display="flex"
@@ -84,7 +84,7 @@ function JoinedPlayerCard(props) {
             </Button>
           </Grid>
         )}
-        {user._id && user._id === props.item._id && (
+        {user._id && user._id === props.item._id && !props.reject && !props.backoutPlayer && (
           <Grid
             item
             display="flex"
