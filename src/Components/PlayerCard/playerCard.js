@@ -52,6 +52,12 @@ function PlayerCard(props) {
     }
   };
 
+  const onPressPlayer = () => {
+    if (location.pathname !== `/player/${user.name}/${user._id}`) {
+      history.push({ pathname: `/player/${user.name}/${user._id}` });
+    }
+  };
+
   return (
     <div className="user-sticky">
       <Paper variant="outlined" elevation={5}>
@@ -214,6 +220,40 @@ function PlayerCard(props) {
                   </Grid>
                   <Grid item xs={0} sm={1}></Grid>
                 </Grid>
+                <Grid container>
+                  <Grid item xs={0} sm={1}></Grid>
+                  <Grid item textAlign="center" xs={0} sm={10}>
+                    <button
+                      onClick={onPressPlayer}
+                      style={{
+                        padding: 0,
+                        margin: 0,
+                        backgroundColor: "transparent",
+                        borderWidth: 0,
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          flex: 1,
+                          flexDirection: "row",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          marginTop: 5,
+                        }}
+                      >
+                        <img
+                          alt="friendship"
+                          src={friendship}
+                          style={{ height: 19.5, width: 19.5, marginRight: 5 }}
+                        />
+                        <Typography variant="title">Player Profile</Typography>
+                      </div>
+                    </button>
+                  </Grid>
+                  <Grid item xs={0} sm={1}></Grid>
+                </Grid>
+
               </Grid>
             </Grid>
           )}

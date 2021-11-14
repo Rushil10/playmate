@@ -17,6 +17,7 @@ import EventDetails from "./Pages/EventDetails/eventDetails";
 import JoinedEvents from "./Pages/JoinedEvents/joinedEvents";
 import BackedOutEvents from "./Pages/BackedOutEvents/backedOutEvents";
 import RejectedEvents from "./Pages/RejectedEvents/rejectedEvents";
+import PlayerProfile from "./Pages/PlayerProfile/profile";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBlz4RUWLWoNRcoqwSXtZCZtvpABQ6eY-k",
@@ -56,6 +57,7 @@ function App() {
               <ProtectedRoute path="/joined" component={JoinedEvents} />
               <ProtectedRoute path="/backedOut" component={BackedOutEvents} />
               <ProtectedRoute path="/rejected" component={RejectedEvents} />
+              <ProtectedRoute path="/player/:name/:id" component={PlayerProfile} />
             </Switch>
           </Router>
         </div>
