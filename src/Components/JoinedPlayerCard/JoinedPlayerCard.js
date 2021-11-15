@@ -14,11 +14,14 @@ import React, { useEffect, useState } from "react";
 import RemovePlayerModal from "../RemovePlayerModal/RemovePlayerModal";
 import { useSelector } from "react-redux";
 import BackoutModal from "../BackOutModal/backoutModal";
+import { useHistory, useLocation } from "react-router-dom";
 
 function JoinedPlayerCard(props) {
   const [openRemove, setOpenRemove] = useState(false);
   const [openBackout, setOpenBackout] = useState(false);
   const user = useSelector((state) => state.player.user);
+  const history = useHistory()
+  const location = useLocation()
   const closeRemove = () => {
     setOpenRemove(false);
   };
@@ -34,6 +37,12 @@ function JoinedPlayerCard(props) {
   const openBackoutModal = () => {
     setOpenBackout(true);
   };
+
+  const onClickUserImage = () => {
+    if (location.pathname !== `/player/${props.item.name}/${props.item._id}`) {
+      history.push({ pathname: `/player/${props.item.name}/${props.item._id}` });
+    }
+  }
 
   return (
     <Grid
@@ -61,7 +70,9 @@ function JoinedPlayerCard(props) {
       />
       <Grid container spacing={2}>
         <Grid item marginLeft="9px" marginright="9px">
-          <Avatar sx={{ width: 45, height: 45 }} src={props.item.image} />
+          <div onClick={onClickUserImage}>
+            <Avatar sx={{ width: 45, height: 45 }} src={props.item.image} />
+          </div>
         </Grid>
         <Grid item>
           <Grid item xs={12}>

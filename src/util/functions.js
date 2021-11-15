@@ -24,3 +24,16 @@ export const getTimeFromDuration = (startTime, duration) => {
     return newDateObj;
   }
 };
+
+function generateRandom(max) { // min and max included 
+  return Math.floor(Math.random() * (max + 1))
+}
+
+export function randomColor() {
+  var red = generateRandom(255)
+  var green = generateRandom(255)
+  var blue = generateRandom(255)
+  var bg =  `rgba(${red},${green},${blue},0.2)`
+  var border =  `rgba(${red},${green},${blue},1)`
+  return [bg,border]
+}
