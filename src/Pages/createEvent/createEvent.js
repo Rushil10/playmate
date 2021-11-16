@@ -25,6 +25,8 @@ import mapUrl from "../../config/mapBoxApi";
 import api from "../../config/api";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CreateEventConfirmModal from "../../Components/CreateEventConfirmModal/createEventConfirmModal";
+import { useHistory } from "react-router-dom";
 
 function CreateEvent(props) {
   const {
@@ -81,7 +83,9 @@ function CreateEvent(props) {
       duration: duration.label,
       additionalAddressInfo: additionalAddressInfo,
     };
-    addMyEvent(event);
+    setEventDet(event)
+    setOpenModal(true)
+    //addMyEvent(event);
   };
   const [sport, setSport] = React.useState(sports[0]);
   const [value, setValue] = React.useState(new Date());
@@ -93,6 +97,12 @@ function CreateEvent(props) {
   const [place, setPlace] = React.useState({});
   const [token, setToken] = React.useState("");
   const [additionalAddressInfo, setAdditionalAddressInfo] = React.useState("");
+  const [openModal, setOpenModal] = React.useState(false);
+  const [eventDet, setEventDet] = React.useState({})
+
+  const closeModal = () => {
+    setOpenModal(false)
+  }
 
   function isInt(value) {
     return (
@@ -197,6 +207,8 @@ function CreateEvent(props) {
     }
   };
 
+  const history = useHistory()
+
   const addMyEvent = async (event) => {
     var playerToken = localStorage.getItem("playerToken");
     var config = {
@@ -207,6 +219,16 @@ function CreateEvent(props) {
       .post(`${api}/event/create`, event, config)
       .then((res) => {
         console.log(res.data);
+        toast.success('Event Created ', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        closeModal()
+        history.push({ pathname: "/" });
       })
       .catch((err) => {
         console.log(err);
@@ -337,6 +359,7 @@ function CreateEvent(props) {
         <img src={kick} className="kickImg" />
       </div>
       <ToastContainer />
+      <CreateEventConfirmModal open={openModal} event={eventDet} place={place} createEvent={addMyEvent} handleClose={closeModal} />
       <Grid container marginTop="15px" marginBottom={5} marginLeft={1}>
         <Grid container spacing={2}>
           <Grid item xs={10} sm={6} md={4}>

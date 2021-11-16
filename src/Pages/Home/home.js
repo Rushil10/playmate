@@ -30,6 +30,9 @@ import { getEventsNearMe } from "../../redux/events/eventActions";
 import EventCard from "../../Components/EventCard/EventCard";
 import organize from "../../images/organize.png";
 import PlayerCard from "../../Components/PlayerCard/playerCard";
+import ReactPaginate from 'react-paginate';
+import Pagination from 'rc-pagination';
+import PaginationComponent from "../../Components/PaginationComponent/pagination";
 
 function Home() {
   const [openDatePicker, setOpenDatePicker] = useState(false);
@@ -67,7 +70,7 @@ function Home() {
     callGetEvents(filter);
   };
 
-  const getFilterEventsNearMe = async (sport, age, gender, dateVal) => {
+  const getFilterEventsNearMe = async (page, sport, age, gender, dateVal) => {
     var filter = {
       longitude: 72.972478,
       latitude: 19.126695,
@@ -104,40 +107,40 @@ function Home() {
 
   const changeDate = (newValue) => {
     setDateVal(newValue);
-    getFilterEventsNearMe(sport, age, gender, newValue);
+    getFilterEventsNearMe(page, sport, age, gender, newValue);
     closeDate();
   };
 
   const handleChangeSport = (selectedOption) => {
     if (selectedOption.value === "Remove") {
       setSport("");
-      getFilterEventsNearMe(null, age, gender, dateVal);
+      getFilterEventsNearMe(page, null, age, gender, dateVal);
       return;
     }
     setSport(selectedOption);
-    getFilterEventsNearMe(selectedOption, age, gender, dateVal);
+    getFilterEventsNearMe(page, selectedOption, age, gender, dateVal);
     console.log(selectedOption);
   };
 
   const handleChangeAge = (selectedOption) => {
     if (selectedOption.value === "Remove") {
       setAge("");
-      getFilterEventsNearMe(sport, null, gender, dateVal);
+      getFilterEventsNearMe(page, sport, null, gender, dateVal);
       return;
     }
     setAge(selectedOption);
-    getFilterEventsNearMe(sport, selectedOption, gender, dateVal);
+    getFilterEventsNearMe(page, sport, selectedOption, gender, dateVal);
     console.log(selectedOption);
   };
 
   const handleChangeGender = (selectedOption) => {
     if (selectedOption.value === "Remove") {
       setGender("");
-      getFilterEventsNearMe(sport, age, null, dateVal);
+      getFilterEventsNearMe(page, sport, age, null, dateVal);
       return;
     }
     setGender(selectedOption);
-    getFilterEventsNearMe(sport, age, selectedOption, dateVal);
+    getFilterEventsNearMe(page, sport, age, selectedOption, dateVal);
     console.log(selectedOption);
   };
 
@@ -198,6 +201,17 @@ function Home() {
     }),
   };
 
+  const handleForwardPageClick = () => {
+    var p = page + 1;
+    setPage(p);
+    getFilterEventsNearMe(p, sport, age, gender, dateVal)
+  }
+
+  const handlePageBackwardClick = () => {
+    var p = page - 1;
+    setPage(p);
+    getFilterEventsNearMe(p, sport, age, gender, dateVal)
+  }
   return (
     <Grid container paddingLeft="15px" paddingRight="15px" spacing={2}>
       <DatePickerModal
@@ -285,6 +299,7 @@ function Home() {
               fetchedEvents.map((item, index) => (
                 <EventCard item={item} index={index} />
               ))}
+            <PaginationComponent forward={handleForwardPageClick} backward={handlePageBackwardClick} page={page} />
           </Paper>
         </Grid>
       </Grid>
