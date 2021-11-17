@@ -15,6 +15,7 @@ import RemovePlayerModal from "../RemovePlayerModal/RemovePlayerModal";
 import { useSelector } from "react-redux";
 import BackoutModal from "../BackOutModal/backoutModal";
 import { useHistory, useLocation } from "react-router-dom";
+import { compareBackingOutTime, compareBackoutTime } from '../../util/functions'
 
 function JoinedPlayerCard(props) {
   const [openRemove, setOpenRemove] = useState(false);
@@ -82,7 +83,7 @@ function JoinedPlayerCard(props) {
             <Typography variant="body2">+91 {props.item.contact}</Typography>
           </Grid>
         </Grid>
-        {props.organiser && !props.reject && !props.backoutPlayer && (
+        {props.organiser && !props.reject && !props.backoutPlayer && compareBackoutTime(props.event.day) && (
           <Grid
             item
             display="flex"
@@ -95,7 +96,7 @@ function JoinedPlayerCard(props) {
             </Button>
           </Grid>
         )}
-        {user._id && user._id === props.item._id && !props.reject && !props.backoutPlayer && (
+        {user._id && user._id === props.item._id && !props.reject && !props.backoutPlayer && compareBackingOutTime(props.event.day) && (
           <Grid
             item
             display="flex"

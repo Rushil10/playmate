@@ -29,24 +29,6 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }));
 
 function EventDetailsCard(props) {
-  //console.log(props.item);
-  /* additionalAddressInfo: ""
-age: 11
-createdAt: "2021-10-29T05:01:01.707Z"
-currency: "INR"
-day: "2021-11-01T05:01:24.000Z"
-duration: "2 hours 30 min"
-gender: "Male"
-location: {type: 'Point', coordinates: Array(2)}
-organiserId: "6165ca06687aa666ca0f2327"
-price_per_person: 125
-rem_players: 7
-sport: "Cricket"
-timings: "2021-10-29T01:01:24.292Z"
-total_players: 21
-venue: "Cricket Grnd Open"
-__v: 0
-_id: "617b806be6a2a45eba9860a2" */
   const { height, width } = useWindowDimensions();
   const [rem_players, setRemPlayers] = useState(0);
   const user = useSelector((state) => state.player.user);

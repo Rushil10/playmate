@@ -23,6 +23,7 @@ import PieChart from "../../Components/Charts/PieChart";
 import useWindowDimensions from "../../Components/useWindowDimensions";
 import { randomColor } from "../../util/functions";
 import ProfileCard from "../../Components/ProfileCard/ProfileCard";
+import PlayerCardExtra from "../../Components/PlayerCardExtra/playerExtraInfo";
 
 function PlayerProfile(props) {
   const match = useParams();
@@ -90,6 +91,9 @@ function PlayerProfile(props) {
           </Grid> */}
           <Grid item xs={12} sm={8} md={6} lg={4}>
             <PieChart label={labels1} value={values1} colors={colors} />
+          </Grid>
+          <Grid item xs={12} sm={8} md={6} lg={4}>
+            <PlayerCardExtra />
           </Grid>
           {/* <Grid item xs={12} sm={6} md={4}>
             <ProfileCard />

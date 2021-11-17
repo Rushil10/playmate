@@ -107,7 +107,8 @@ function Home() {
 
   const changeDate = (newValue) => {
     setDateVal(newValue);
-    getFilterEventsNearMe(page, sport, age, gender, newValue);
+    setPage(1)
+    getFilterEventsNearMe(1, sport, age, gender, newValue);
     closeDate();
   };
 

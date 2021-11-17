@@ -19,6 +19,7 @@ import { getOrganizedEvents } from "../../redux/events/eventActions";
 import PlayerCard from "../../Components/PlayerCard/playerCard";
 import EventCard from "../../Components/EventCard/EventCard";
 import OrganizedEventCard from "../../Components/OrganizedEventCard/OrganizedEventCard";
+import Header from "../../Components/Header/header";
 
 function OrganizedEvents(props) {
   const callOrganizedEvents = useCallback(
@@ -46,6 +47,7 @@ function OrganizedEvents(props) {
     <Grid container paddingLeft="15px" paddingRight="15px" spacing={2}>
       <Grid item xs={12} sm={8} md={9.5} order={{ xs: 2, sm: 1 }}>
         <Grid container>
+          <Header title="Organized Events" />
           <Paper
             elevation={0}
             style={{

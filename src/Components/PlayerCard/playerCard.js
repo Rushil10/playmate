@@ -107,13 +107,6 @@ function PlayerCard(props) {
                 <Typography style={{ marginTop: 15 }} variant="h5">{user.name}</Typography>
               </Grid>
               <Grid item xs={8} sm={12}>
-                {/* <Grid container>
-                  <Grid item xs={0} sm={4}></Grid>
-                  <Grid item textAlign="center" xs={0} sm={4}>
-                    <Typography variant="h5">{user.name}</Typography>
-                  </Grid>
-                  <Grid item xs={0} sm={4}></Grid>
-                </Grid> */}
                 <CustomButton active={organizedActive} title="Organized Events" image={organize} onPress={onPressOrganized} />
                 <CustomButton active={joinedActive} title="Joined Events" image={friendship} onPress={onPressJoined} />
                 <CustomButton active={backedActive} title="BackedOut Events" image={cancel} onPress={onPressBackedOut} />

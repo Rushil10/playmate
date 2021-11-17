@@ -73,7 +73,7 @@ function EventDetails() {
   }, []);
 
   return (
-    <Grid container paddingLeft="15px" paddingRight="15px" spacing={2}>
+    <Grid container paddingLeft="15px" paddingRight="15px" paddingBottom="15px" spacing={2}>
       <Grid item xs={12} sm={8} md={9.5} order={{ xs: 2, sm: 1 }}>
         <Grid container>
           <Paper
@@ -86,6 +86,7 @@ function EventDetails() {
             }}
           >
             <EventDetailsCard item={eventDetails} />
+            <Typography style={{ marginTop: 5 }} >Organiser Contact : +91 {eventDetails.organiserContact}</Typography>
           </Paper>
         </Grid>
         <Grid container>
@@ -97,6 +98,7 @@ function EventDetails() {
           {players.map((player, index) => (
             <JoinedPlayerCard
               eventId={match.id}
+              event={eventDetails}
               item={player}
               index={index}
               reject={false}
@@ -107,7 +109,7 @@ function EventDetails() {
           ))}
         </Grid>
         {
-          isOrganiser &&
+          isOrganiser && bplayers.length > 0 &&
           <>
             <Grid container>
               <Grid item marginTop="9px">
@@ -121,6 +123,7 @@ function EventDetails() {
                   item={player}
                   index={index}
                   backoutPlayer={true}
+                  event={eventDetails}
                   reject={false}
                   organiser={isOrganiser}
                   updateOnPlayerRemoval={updateOnPlayerRemoval}
@@ -130,7 +133,7 @@ function EventDetails() {
           </>
         }
         {
-          isOrganiser && <>
+          isOrganiser && cplayers.length > 0 && <>
             <Grid container>
               <Grid item marginTop="9px">
                 <Typography variant="h6">Rejected Players</Typography>
@@ -144,6 +147,7 @@ function EventDetails() {
                   index={index}
                   reject={true}
                   backoutPlayer={false}
+                  event={eventDetails}
                   organiser={isOrganiser}
                   updateOnPlayerRemoval={updateOnPlayerRemoval}
                 />
@@ -161,7 +165,7 @@ function EventDetails() {
       >
         <PlayerCard />
       </Grid>
-    </Grid>
+    </Grid >
   );
 }
 
