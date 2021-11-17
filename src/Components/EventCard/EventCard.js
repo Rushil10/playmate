@@ -1,4 +1,4 @@
-import { Button, Grid, Paper, Typography } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Paper, Typography } from "@mui/material";
 import moment from "moment";
 import React, { useState, useEffect } from "react";
 import location from "../../images/location.png";
@@ -14,6 +14,8 @@ import axios from "axios";
 import api from "../../config/api";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css'
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
@@ -29,24 +31,6 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }));
 
 function EventCard(props) {
-  //console.log(props.item);
-  /* additionalAddressInfo: ""
-age: 11
-createdAt: "2021-10-29T05:01:01.707Z"
-currency: "INR"
-day: "2021-11-01T05:01:24.000Z"
-duration: "2 hours 30 min"
-gender: "Male"
-location: {type: 'Point', coordinates: Array(2)}
-organiserId: "6165ca06687aa666ca0f2327"
-price_per_person: 125
-rem_players: 7
-sport: "Cricket"
-timings: "2021-10-29T01:01:24.292Z"
-total_players: 21
-venue: "Cricket Grnd Open"
-__v: 0
-_id: "617b806be6a2a45eba9860a2" */
   const { height, width } = useWindowDimensions();
   const [rem_players, setRemPlayers] = useState(0);
   const [joined, setJoined] = useState(false);
@@ -68,6 +52,16 @@ _id: "617b806be6a2a45eba9860a2" */
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.item._id, events]);
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const joinEvent = async () => {
     var body = {
       eventId: props.item._id,
@@ -84,6 +78,7 @@ _id: "617b806be6a2a45eba9860a2" */
         .then((res) => {
           console.log(res.data);
           setRemPlayers(rem_players - 1);
+          handleClose()
           setJoined(true);
         })
         .catch((err) => {
@@ -106,6 +101,25 @@ _id: "617b806be6a2a45eba9860a2" */
       paddingLeft="15px"
       paddingBottom="9px"
     >
+      <Dialog
+        open={open}
+        onClose={handleClose}
+      >
+        <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
+          Joining {props.item.sport} Event
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure to do this on {moment(props.item.day).format("DD  MMM ")}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button onClick={joinEvent}>Join</Button>
+        </DialogActions>
+      </Dialog>
       <Grid container xs={12} md={7} order={{ xs: 1, sm: 1 }}>
         <Grid container alignItems="center" spacing={2.5}>
           <Grid item>
@@ -180,7 +194,8 @@ _id: "617b806be6a2a45eba9860a2" */
         <Grid item alignItems="center" textAlign="center" xs={4} md={7}>
           <Button
             disabled={joined}
-            onClick={joinEvent}
+            //onClick={joinEvent}
+            onClick={handleClickOpen}
             size="small"
             variant="contained"
           >
@@ -189,10 +204,10 @@ _id: "617b806be6a2a45eba9860a2" */
                 ? "Organiser"
                 : "Joined"
               : width < 450
-              ? "Join"
-              : width < 650 && width > 600
-              ? "Join"
-              : "Book My Spot"}
+                ? "Join"
+                : width < 650 && width > 600
+                  ? "Join"
+                  : "Book My Spot"}
           </Button>
         </Grid>
         <Grid item textAlign="center" xs={4} md={7}>

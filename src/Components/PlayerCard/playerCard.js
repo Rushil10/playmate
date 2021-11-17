@@ -17,8 +17,12 @@ import { useSelector } from "react-redux";
 import useWindowDimensions from "../useWindowDimensions";
 import organize from "../../images/organize.png";
 import friendship from "../../images/friendship.png";
+import profile from "../../images/profile.png";
+import cancel from "../../images/cancel.png";
+import rejected from "../../images/rejected.png";
 import "./playerCard.css";
 import { useHistory, useLocation } from "react-router-dom";
+import CustomButton from "../CustomButton/customButton";
 
 function PlayerCard(props) {
   const { height, width } = useWindowDimensions();
@@ -27,6 +31,27 @@ function PlayerCard(props) {
   const authenticated = useSelector((state) => state.player.authenticated);
   const user = useSelector((state) => state.player.user);
   const [loading, setLoading] = useState(true);
+  const [organizedActive, setOrganizedActive] = useState(false)
+  const [backedActive, setBackedActive] = useState(false)
+  const [rejectedActive, setRejectedActive] = useState(false)
+  const [joinedActive, setJoinedActive] = useState(false)
+
+  useEffect(() => {
+    if (location.pathname === "/organized") {
+      setOrganizedActive(true)
+    } else if (location.pathname === "/joined") {
+      setJoinedActive(true)
+    } else if (location.pathname === "/backedOut") {
+      setBackedActive(true)
+    } else if (location.pathname === "/rejected") {
+      setRejectedActive(true)
+    } else {
+      setOrganizedActive(false)
+      setJoinedActive(false)
+      setBackedActive(false)
+      setRejectedActive(false)
+    }
+  }, [location])
 
   const onPressOrganized = () => {
     if (location.pathname !== "/organized") {
@@ -58,205 +83,60 @@ function PlayerCard(props) {
     }
   };
 
+  const goToSignup = () => {
+    history.push({ pathname: "/signup" });
+  }
+
   return (
     <div className="user-sticky">
-      <Paper variant="outlined" elevation={5}>
-        <Grid conatiner>
-          {authenticated && (
+      <Paper /* variant="outlined" */ elevation={2}>
+        <Grid conatiner /* backgroundColor="rgba(42,170,138,0.05)" */>
+          {authenticated ? (
             <Grid container paddingTop="15px" paddingBottom="15px" spacing={1}>
-              <Grid textAlign="center" item xs={4} sm={12}>
+              <Grid textAlign="center" display="flex" flex={1} justifyContent="center" flexDirection="column" alignItems="center" item xs={4} sm={12}>
                 <img
                   alt="user"
                   src={user.image}
                   style={{
-                    height: width / 9,
-                    width: width / 9,
-                    borderRadius: width / 18,
+                    height: width > 450 ? width / 9 : width / 4.5,
+                    width: width > 450 ? width / 9 : width / 4.5,
+                    borderRadius: width > 450 ? width / 18 : width / 9,
                     resize: "cover",
-                    minWidth: 85,
-                    minHeight: 85,
                   }}
                 />
+                <Typography style={{ marginTop: 15 }} variant="h5">{user.name}</Typography>
               </Grid>
               <Grid item xs={8} sm={12}>
-                <Grid container>
+                {/* <Grid container>
                   <Grid item xs={0} sm={4}></Grid>
                   <Grid item textAlign="center" xs={0} sm={4}>
                     <Typography variant="h5">{user.name}</Typography>
                   </Grid>
                   <Grid item xs={0} sm={4}></Grid>
-                </Grid>
-                <Grid container>
-                  <Grid item xs={0} sm={1}></Grid>
-                  <Grid item textAlign="center" xs={0} sm={10}>
-                    <button
-                      onClick={onPressOrganized}
-                      style={{
-                        padding: 0,
-                        margin: 0,
-                        backgroundColor: "transparent",
-                        borderWidth: 0,
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          flex: 1,
-                          flexDirection: "row",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          marginTop: 5,
-                        }}
-                      >
-                        <img
-                          alt="organize"
-                          src={organize}
-                          style={{ height: 19.5, width: 19.5, marginRight: 5 }}
-                        />
-                        <Typography variant="title">
-                          Organized Events
-                        </Typography>
-                      </div>
-                    </button>
-                  </Grid>
-                  <Grid item xs={0} sm={1}></Grid>
-                </Grid>
-                <Grid container>
-                  <Grid item xs={0} sm={1}></Grid>
-                  <Grid item textAlign="center" xs={0} sm={10}>
-                    <button
-                      onClick={onPressJoined}
-                      style={{
-                        padding: 0,
-                        margin: 0,
-                        backgroundColor: "transparent",
-                        borderWidth: 0,
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          flex: 1,
-                          flexDirection: "row",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          marginTop: 5,
-                        }}
-                      >
-                        <img
-                          alt="friendship"
-                          src={friendship}
-                          style={{ height: 19.5, width: 19.5, marginRight: 5 }}
-                        />
-                        <Typography variant="title">Joined Events</Typography>
-                      </div>
-                    </button>
-                  </Grid>
-                  <Grid item xs={0} sm={1}></Grid>
-                </Grid>
-                <Grid container>
-                  <Grid item xs={0} sm={1}></Grid>
-                  <Grid item textAlign="center" xs={0} sm={10}>
-                    <button
-                      onClick={onPressBackedOut}
-                      style={{
-                        padding: 0,
-                        margin: 0,
-                        backgroundColor: "transparent",
-                        borderWidth: 0,
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          flex: 1,
-                          flexDirection: "row",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          marginTop: 5,
-                        }}
-                      >
-                        <img
-                          alt="friendship"
-                          src={friendship}
-                          style={{ height: 19.5, width: 19.5, marginRight: 5 }}
-                        />
-                        <Typography variant="title">BackedOut Events</Typography>
-                      </div>
-                    </button>
-                  </Grid>
-                  <Grid item xs={0} sm={1}></Grid>
-                </Grid>
-                <Grid container>
-                  <Grid item xs={0} sm={1}></Grid>
-                  <Grid item textAlign="center" xs={0} sm={10}>
-                    <button
-                      onClick={onPressRejected}
-                      style={{
-                        padding: 0,
-                        margin: 0,
-                        backgroundColor: "transparent",
-                        borderWidth: 0,
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          flex: 1,
-                          flexDirection: "row",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          marginTop: 5,
-                        }}
-                      >
-                        <img
-                          alt="friendship"
-                          src={friendship}
-                          style={{ height: 19.5, width: 19.5, marginRight: 5 }}
-                        />
-                        <Typography variant="title">Rejected Events</Typography>
-                      </div>
-                    </button>
-                  </Grid>
-                  <Grid item xs={0} sm={1}></Grid>
-                </Grid>
-                <Grid container>
-                  <Grid item xs={0} sm={1}></Grid>
-                  <Grid item textAlign="center" xs={0} sm={10}>
-                    <button
-                      onClick={onPressPlayer}
-                      style={{
-                        padding: 0,
-                        margin: 0,
-                        backgroundColor: "transparent",
-                        borderWidth: 0,
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          flex: 1,
-                          flexDirection: "row",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          marginTop: 5,
-                        }}
-                      >
-                        <img
-                          alt="friendship"
-                          src={friendship}
-                          style={{ height: 19.5, width: 19.5, marginRight: 5 }}
-                        />
-                        <Typography variant="title">Player Profile</Typography>
-                      </div>
-                    </button>
-                  </Grid>
-                  <Grid item xs={0} sm={1}></Grid>
-                </Grid>
-
+                </Grid> */}
+                <CustomButton active={organizedActive} title="Organized Events" image={organize} onPress={onPressOrganized} />
+                <CustomButton active={joinedActive} title="Joined Events" image={friendship} onPress={onPressJoined} />
+                <CustomButton active={backedActive} title="BackedOut Events" image={cancel} onPress={onPressBackedOut} />
+                <CustomButton active={rejectedActive} title="Rejected" image={rejected} onPress={onPressRejected} />
+                <CustomButton title="My Profile" image={profile} onPress={onPressPlayer} />
               </Grid>
             </Grid>
-          )}
+          ) :
+            <Grid conatiner padding="15px">
+              <Grid item xs={12}>
+                <Typography style={{}} variant="h6" >Join To Play</Typography>
+                <Typography style={{}} variant="subtitle" >Join and Organize Sports Events. Connect with players and enjoy .</Typography>
+              </Grid>
+
+              <Grid container marginTop="9px" spacing={2}>
+                <Grid item xs={5} sm={12} md={12} lg={6}>
+                  <Button onClick={goToSignup} variant="contained" style={{ backgroundColor: '#1da1f2' }}>Signup</Button>
+                </Grid>
+                <Grid item xs={5}>
+                  <Button variant="contained" style={{ backgroundColor: '#1da1f2' }}>Login</Button>
+                </Grid>
+              </Grid>
+            </Grid>}
         </Grid>
       </Paper>
     </div>

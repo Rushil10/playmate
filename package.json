@@ -25,6 +25,7 @@
     "react-bootstrap": "^2.0.0-rc.0",
     "react-calendar": "^3.5.0",
     "react-chartjs-2": "^3.3.0",
+    "react-confirm-alert": "^2.7.0",
     "react-datepicker": "^4.3.0",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.17.4",
