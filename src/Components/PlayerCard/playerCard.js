@@ -83,6 +83,12 @@ function PlayerCard(props) {
     }
   };
 
+  const onPressEvent = () => {
+    if (location.pathname !== `/create`) {
+      history.push({ pathname: `/create` });
+    }
+  };
+
   const goToSignup = () => {
     history.push({ pathname: "/signup" });
   }
@@ -112,6 +118,10 @@ function PlayerCard(props) {
                 <CustomButton active={backedActive} title="BackedOut Events" image={cancel} onPress={onPressBackedOut} />
                 <CustomButton active={rejectedActive} title="Rejected" image={rejected} onPress={onPressRejected} />
                 <CustomButton title="My Profile" image={profile} onPress={onPressPlayer} />
+              </Grid>
+              <Grid item display="flex" flex={1} justifyContent="center" flexDirection="column" alignItems="center" xs={12}>
+                <Button onClick={onPressEvent} size="medium" style={{ backgroundColor: '#1da1f2' }}
+                  variant="contained">Organise Event</Button>
               </Grid>
             </Grid>
           ) :
