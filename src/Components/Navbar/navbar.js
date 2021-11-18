@@ -5,6 +5,7 @@ import logo from "../../images/textLogo.png";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
+import LocationButton from "../LocationButton/locationButton";
 
 function Navbar(props) {
   const authenticated = useSelector((state) => state.player.authenticated);
@@ -22,6 +23,9 @@ function Navbar(props) {
           <div onClick={() => history.push({ pathname: '/' })}>
             <img src={logo} style={{ height: 49 }} />
           </div>
+        </Fragment>
+        <Fragment>
+          <LocationButton />
         </Fragment>
         {authenticated ? (
           <Fragment>

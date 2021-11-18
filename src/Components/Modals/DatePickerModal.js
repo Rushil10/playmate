@@ -2,20 +2,6 @@ import { LocalizationProvider, StaticDatePicker } from "@mui/lab";
 import { Box, Grid, Modal, TextField } from "@mui/material";
 import DateAdapter from "@mui/lab/AdapterMoment";
 import React from "react";
-//import Modal from "react-modal";
-import Calendar from "react-calendar";
-
-const customStyles = {
-  content: {
-    top: "19%",
-    left: "15px",
-    right: "auto",
-    bottom: "auto",
-    zIndex: 99999
-    //marginRight: "-50%",
-    //transform: "translate(-50%, -50%)",
-  },
-};
 
 function DatePickerModal(props) {
   const [value, setValue] = React.useState(new Date());
