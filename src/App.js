@@ -9,7 +9,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Navbar from "./Components/Navbar/navbar";
 import { Provider } from "react-redux";
 import store from "./redux/store";
-import { setPlayerData } from "./redux/player/playerActions";
+import { setLocation, setPlayerData } from "./redux/player/playerActions";
 import CreateEvent from "./Pages/createEvent/createEvent";
 import OrganizedEvents from "./Pages/OrganizedEvents/organizedEvents";
 import ProtectedRoute from "./Components/ProtectedRoute";
@@ -35,6 +35,20 @@ const theme = createTheme(themeFile);
 const token = localStorage.playerToken;
 if (token) {
   store.dispatch(setPlayerData(token));
+}
+
+const lat = localStorage.lat;
+if (lat) {
+  console.log(lat)
+  const lon = localStorage.lon;
+  const city = localStorage.city;
+  var loc = {
+    latitude: lat,
+    longitude: lon,
+    city
+  }
+  console.log(loc)
+  store.dispatch(setLocation(loc))
 }
 
 function App() {

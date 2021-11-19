@@ -15,9 +15,11 @@ import {
 } from "@mui/material";
 import KeyboardArrowDownSharpIcon from '@mui/icons-material/KeyboardArrowDownSharp';
 import LocationPickerModal from "../LocationPickerModal/LocationPickerModal";
+import { useSelector } from "react-redux";
 
 function LocationButton(props) {
   const [open, setOpen] = useState(false)
+  const location = useSelector((state) => state.player.location);
 
   const closeRemove = () => {
     setOpen(false);
@@ -31,7 +33,7 @@ function LocationButton(props) {
     <div onClick={openRemove} style={{ marginLeft: 15, display: "flex", flexDirection: "row", alignItems: 'center' }}>
       <LocationPickerModal open={open} handleClose={closeRemove} />
       <div>
-        <Typography variant="h6" color="white">Thane</Typography>
+        <Typography style={{ fontSize: 18}} color="white">{location.city}</Typography>
       </div>
       <div>
         <KeyboardArrowDownSharpIcon color="white" style={{ marginLeft: 5, marginTop: 5 }} />

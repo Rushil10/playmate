@@ -42,6 +42,7 @@ function Home() {
   const [gender, setGender] = useState("");
   const authenticated = useSelector((state) => state.player.authenticated);
   const user = useSelector((state) => state.player.user);
+  const location = useSelector((state) => state.player.location);
   const { height, width } = useWindowDimensions();
   const [page, setPage] = useState(1);
   const [fetchedEvents, setFetchedEvents] = useState([]);
@@ -61,19 +62,24 @@ function Home() {
   }, [events]);
 
   const getEventsInLocality = async () => {
+    setPage(1)
+    setSport('')
+    setGender('')
+    setAge('')
+    setDateVal(new Date())
     var filter = {
-      longitude: 72.972478,
-      latitude: 19.126695,
+      longitude: location.longitude,
+      latitude: location.latitude,
       size: SIZE,
-      page,
+      page: 1,
     };
     callGetEvents(filter);
   };
 
   const getFilterEventsNearMe = async (page, sport, age, gender, dateVal) => {
     var filter = {
-      longitude: 72.972478,
-      latitude: 19.126695,
+      longitude: location.longitude,
+      latitude: location.latitude,
       size: SIZE,
       page,
     };
@@ -96,6 +102,11 @@ function Home() {
   useEffect(() => {
     getEventsInLocality();
   }, []);
+
+  useEffect(() => {
+    getEventsInLocality()
+    console.log("Location Changed")
+  }, [location.latitude, location.city, location.longitude])
 
   const openDate = () => {
     setOpenDatePicker(true);

@@ -6,6 +6,8 @@ import mapUrl from "../../config/mapBoxApi";
 import useWindowDimensions from "../useWindowDimensions";
 import './locationPicker.css'
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
+import store from "../../redux/store";
+import { setLocation } from '../../redux/player/playerActions'
 
 
 function LocationPickerModal(props) {
@@ -28,6 +30,20 @@ function LocationPickerModal(props) {
       });
   };
 
+  const onSubmitLocation = async () => {
+    console.log(place)
+    localStorage.setItem("city", place.text)
+    localStorage.setItem("lat", place.geometry.coordinates[1])
+    localStorage.setItem("lon", place.geometry.coordinates[0])
+    var loc = {
+      longitude: place.geometry.coordinates[0],
+      latitude: place.geometry.coordinates[1],
+      city: place.text
+    }
+    store.dispatch(setLocation(loc))
+    await props.handleClose()
+  }
+
   const handler = React.useCallback(debounce(getPlaces, 2000), []);
 
   const callSearch = (text) => {
@@ -42,9 +58,9 @@ function LocationPickerModal(props) {
 
   const handleChangeLocality = (e) => {
     setLocality(e.target.value);
-    console.log(token);
+    //console.log(token);
     if (e.target.value.length > 0) {
-      console.log("in if");
+      //console.log("in if");
       handler(e.target.value, token);
     }
   };
@@ -61,6 +77,23 @@ function LocationPickerModal(props) {
     navigator.geolocation.getCurrentPosition(function (position) {
       console.log("Latitude is :", position.coords.latitude);
       console.log("Longitude is :", position.coords.longitude);
+      axios.get(`https://us1.locationiq.com/v1/reverse.php?key=pk.e7c91e218be02fabea9b987697095020&lat=${position.coords.latitude}&lon=${position.coords.longitude}&format=json`).then(res => {
+        console.log(res.data)
+        var city = res.data.address.city;
+        console.log(city)
+        localStorage.setItem("city", city)
+        localStorage.setItem("lat", position.coords.latitude)
+        localStorage.setItem("lon", position.coords.longitude)
+        var loc = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          city
+        }
+        store.dispatch(setLocation(loc))
+        props.handleClose()
+      }).catch(err => {
+        console.log(err)
+      })
     });
   }
 
@@ -100,7 +133,7 @@ function LocationPickerModal(props) {
             </button>
 
             <div style={{ marginTop: 9 }}>
-              <Button disabled={place.text ? false : true} size="medium" variant="contained" fullWidth>Submit Location</Button>
+              <Button onClick={onSubmitLocation} disabled={place.text ? false : true} size="medium" variant="contained" fullWidth>Submit Location</Button>
             </div>
           </div>
         </Grid>
