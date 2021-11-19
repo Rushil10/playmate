@@ -26,6 +26,7 @@ function EventDetails() {
   const [bplayers, setBPlayers] = useState([]);
   const [cplayers, setCPlayers] = useState([]);
   const [isOrganiser, setIsOrganiser] = useState(false);
+  const [organiserDetails, setorganiserDetails] = useState({})
   const user = useSelector((state) => state.player.user);
   const getEventDetails = () => {
     setLoading(true);
@@ -40,6 +41,7 @@ function EventDetails() {
         }
         setPlayers(res.data.players);
         setBPlayers(res.data.backedOutPlayers)
+        setorganiserDetails(res.data.organiserDetails)
         setCPlayers(res.data.rejectedPlayers)
         setLoading(false);
       })
@@ -86,8 +88,21 @@ function EventDetails() {
             }}
           >
             <EventDetailsCard item={eventDetails} />
-            <Typography style={{ marginTop: 5 }} >Organiser Contact : +91 {eventDetails.organiserContact}</Typography>
+            {/* <Typography style={{ marginTop: 5 }} >Organiser Contact : +91 {eventDetails.organiserContact}</Typography> */}
           </Paper>
+        </Grid>
+        <Grid container>
+          <Typography variant="h6" style={{ marginTop: 5 }} >Organiser</Typography>
+          <JoinedPlayerCard
+            eventId={match.id}
+            event={eventDetails}
+            item={organiserDetails}
+            index={0}
+            reject={false}
+            backoutPlayer={true}
+            organiser={false}
+            updateOnPlayerRemoval={updateOnPlayerRemoval}
+          />
         </Grid>
         <Grid container>
           <Grid item marginTop="9px">

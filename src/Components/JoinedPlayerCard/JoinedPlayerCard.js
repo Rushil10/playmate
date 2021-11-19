@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import BackoutModal from "../BackOutModal/backoutModal";
 import { useHistory, useLocation } from "react-router-dom";
 import { compareBackingOutTime, compareBackoutTime } from '../../util/functions'
+import moment from "moment";
 
 function JoinedPlayerCard(props) {
   const [openRemove, setOpenRemove] = useState(false);
@@ -110,6 +111,48 @@ function JoinedPlayerCard(props) {
           </Grid>
         )}
       </Grid>
+      {
+        props.item.requestInfo && props.item.requestInfo.requestType === "Cancelled" && (
+          <Grid container padding="9px" paddingBottom="0px">
+            <Grid item xs={12}>
+              <Typography variant="body1">
+                Reason
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="subtitle">
+                {props.item.requestInfo.cancellation_reason}
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="caption">
+                ~ {moment(props.item.requestInfo.cancelledAt).format("DD MMM   hh:mm a")}
+              </Typography>
+            </Grid>
+          </Grid>
+        )
+      }
+      {
+        props.item.requestInfo && props.item.requestInfo.requestType === "Rejected" && (
+          <Grid container padding="9px" paddingBottom="0px">
+            <Grid item xs={12}>
+              <Typography variant="body1">
+                Reason
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="subtitle">
+                {props.item.requestInfo.rejection_reason}
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="caption">
+                ~ {moment(props.item.requestInfo.rejectedAt).format("DD MMM   hh:mm a")}
+              </Typography>
+            </Grid>
+          </Grid>
+        )
+      }
     </Grid>
   );
 }

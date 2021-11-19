@@ -10,7 +10,7 @@ import {
   signInWithPhoneNumber,
   PhoneAuthProvider,
 } from "firebase/auth";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Grid } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import OtpInput from "react-otp-input";
 import { FormLabel } from "@mui/material";
@@ -125,7 +125,7 @@ function Signup() {
             console.log(result.data);
             localStorage.setItem("playerToken", result.data.token);
             store.dispatch(setPlayerData(result.data.token))
-            history.push({pathname:'/'})
+            history.push({ pathname: '/' })
             setVerifying(false);
           })
           .catch((err) => {
@@ -162,7 +162,7 @@ function Signup() {
             />
           </div>
           {invalidotp && (
-            <div style={{alignItems:'center',textAlign:'center',marginTop:9}}>
+            <div style={{ alignItems: 'center', textAlign: 'center', marginTop: 9 }}>
               <label className="errorLabel">Invalid OTP !</label>
             </div>
           )}

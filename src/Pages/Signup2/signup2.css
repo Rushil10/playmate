@@ -1,7 +1,7 @@
 .phoneContainer {
-    display: flex;
-    flex-direction: row;
-    background-color:aliceblue;
+  display: flex;
+  flex-direction: row;
+  background-color: aliceblue;
 }
 
 .errorLabel {
@@ -23,6 +23,16 @@
   margin: 0 1rem;
   font-size: 2rem;
   border-radius: 4px;
+}
+
+@media screen and (max-width: 590px) {
+  .otpInputStyle {
+    width: 1.25rem;
+    height: 1.9rem;
+    margin: 0 0.5rem;
+    font-size: 1.5rem;
+    border-radius: 4px;
+  }
 }
 
 :root {
@@ -63,8 +73,8 @@
 
 .signupSpace {
   align-items: center;
-  background-color: #ECF3F3;
-  padding:25px;
+  background-color: #ecf3f3;
+  padding: 15px;
   margin-top: 25px;
   border-radius: 15px;
 }
@@ -135,7 +145,7 @@
 
 .signupContainer {
   display: flex;
-  flex:1;
+  flex: 1;
   flex-direction: column;
   background: white;
   align-items: center;
