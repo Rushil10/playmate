@@ -8,6 +8,12 @@
   padding-bottom: 5px;
   display: flex;
   flex-direction: row;
+  margin-right: 7.5px;
+}
+
+.dateStyling {
+  margin-top: 7px;
+  margin-left: 11px;
 }
 
 .columnFlex {
@@ -21,7 +27,54 @@
 }
 
 .smallMarginBottom {
-    margin-bottom: 1.5px;
+  margin-bottom: 1.5px;
+}
+
+.horizontalFilters::-webkit-scrollbar {
+  display: none;
+}
+
+.horizontalFilters {
+  overflow-x: scroll;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 7.5px;
+  margin-top: 5px;
+  border-left: 1px solid #d3d3d3;
+}
+
+@media screen and (min-width: 590px) {
+  .horizontalFilters {
+    margin-top: 5px;
+    padding-left: 7.5px;
+    border-left: 0px solid #d3d3d3;
+  }
+}
+
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  background-color: white;
+  top: 55px;
+  z-index: 10;
+}
+
+.someSpaceBetween {
+  margin-right: 9px;
+}
+
+.sportMinWidth {
+  min-width: 95px;
+}
+
+.ageMinWidth {
+  min-width: 75px;
+}
+
+.genderMinWidth {
+  min-width: 95px;
 }
 
 .smallText {
@@ -49,4 +102,3 @@
 .flex-no-shrink {
   flex-shrink: 0;
 }
-

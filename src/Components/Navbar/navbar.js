@@ -5,6 +5,7 @@ import logo from "../../images/textLogo.png";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
+import LocationButton from "../LocationButton/locationButton";
 
 function Navbar(props) {
   const authenticated = useSelector((state) => state.player.authenticated);
@@ -19,19 +20,23 @@ function Navbar(props) {
     <AppBar>
       <Toolbar className="navbarStyling" variant="dense">
         <Fragment>
-          <img src={logo} style={{ height: 55 }} />
+          <div onClick={() => history.push({ pathname: '/' })}>
+            <img src={logo} style={{ height: 49 }} />
+          </div>
+        </Fragment>
+        <Fragment>
+          <LocationButton />
         </Fragment>
         {authenticated ? (
           <Fragment>
-            <Button color="inherit">
-              Events
-            </Button>
+            {/* <Button variant="contained" style={{ backgroundColor: 'white' }}>
+              Organise
+            </Button> */}
           </Fragment>
         ) : (
           <Fragment>
-            <Button onClick={() => history.push({pathname:'/'})} color="inherit">Events</Button>
-            <Button onClick={() => history.push({pathname:'/signup'})} color="inherit">Signup</Button>
-            <Button onClick={() => history.push({pathname:'/signup'})} color="inherit">Login</Button>
+            {/* <Button onClick={() => history.push({ pathname: '/signup' })} color="inherit">Signup</Button>
+            <Button onClick={() => history.push({ pathname: '/signup' })} color="inherit">Login</Button> */}
           </Fragment>
         )}
       </Toolbar>

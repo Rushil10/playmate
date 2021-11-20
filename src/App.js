@@ -9,8 +9,19 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Navbar from "./Components/Navbar/navbar";
 import { Provider } from "react-redux";
 import store from "./redux/store";
-import { setPlayerData } from "./redux/player/playerActions";
+import { setLocation, setPlayerData } from "./redux/player/playerActions";
 import CreateEvent from "./Pages/createEvent/createEvent";
+import OrganizedEvents from "./Pages/OrganizedEvents/organizedEvents";
+import ProtectedRoute from "./Components/ProtectedRoute";
+import EventDetails from "./Pages/EventDetails/eventDetails";
+import JoinedEvents from "./Pages/JoinedEvents/joinedEvents";
+import BackedOutEvents from "./Pages/BackedOutEvents/backedOutEvents";
+import RejectedEvents from "./Pages/RejectedEvents/rejectedEvents";
+import PlayerProfile from "./Pages/PlayerProfile/profile";
+import AllOrganizedEvents from "./Pages/AllOrganizedEvents/allOrganizedEvents";
+import AllJoinedEvents from "./Pages/AllJoinedEvents/allJoinedEvents";
+import AllBackedOutEvents from "./Components/AllBackedOutEvents/allBackedOutEvents";
+import AllRejectedEvents from "./Components/AllRejectedEvents/AllRejectedEvents";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBlz4RUWLWoNRcoqwSXtZCZtvpABQ6eY-k",
@@ -30,6 +41,20 @@ if (token) {
   store.dispatch(setPlayerData(token));
 }
 
+const lat = localStorage.lat;
+if (lat) {
+  console.log(lat)
+  const lon = localStorage.lon;
+  const city = localStorage.city;
+  var loc = {
+    latitude: lat,
+    longitude: lon,
+    city
+  }
+  console.log(loc)
+  store.dispatch(setLocation(loc))
+}
+
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -44,9 +69,17 @@ function App() {
               <Route path="/signup">
                 <Signup2 />
               </Route>
-              <Route path="/create">
-                <CreateEvent />
-              </Route>
+              <ProtectedRoute path="/event/:id" component={EventDetails} />
+              <ProtectedRoute path="/create" component={CreateEvent} />
+              <ProtectedRoute path="/organized" component={OrganizedEvents} />
+              <ProtectedRoute path="/allOrganized" component={AllOrganizedEvents} />
+              <ProtectedRoute path="/joined" component={JoinedEvents} />
+              <ProtectedRoute path="/allJoined" component={AllJoinedEvents} />
+              <ProtectedRoute path="/backedOut" component={BackedOutEvents} />
+              <ProtectedRoute path="/allBackedOut" component={AllBackedOutEvents} />
+              <ProtectedRoute path="/rejected" component={RejectedEvents} />
+              <ProtectedRoute path="/allRejected" component={AllRejectedEvents} />
+              <ProtectedRoute path="/player/:name/:id" component={PlayerProfile} />
             </Switch>
           </Router>
         </div>

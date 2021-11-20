@@ -23,6 +23,10 @@ import kick from "../../images/kick3.jpg";
 import "./createEvent.css";
 import mapUrl from "../../config/mapBoxApi";
 import api from "../../config/api";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import CreateEventConfirmModal from "../../Components/CreateEventConfirmModal/createEventConfirmModal";
+import { useHistory } from "react-router-dom";
 
 function CreateEvent(props) {
   const {
@@ -38,14 +42,36 @@ function CreateEvent(props) {
     console.log(duration);
     console.log(value);
     console.log(place);
+    if (
+      !createEventValidation(
+        data.remPlayers,
+        data.totalPlayers,
+        data.age,
+        data.price
+      )
+    ) {
+      return;
+    }
+    var sday;
+    var time;
+    if (day._d) {
+      sday = day._d;
+    } else {
+      sday = day;
+    }
+    if (value._d) {
+      time = value._d;
+    } else {
+      time = value;
+    }
     var event = {
-      total_players: data.totalPlayers,
-      rem_players: data.remPlayers,
+      total_players: Number(data.totalPlayers),
+      rem_players: Number(data.remPlayers),
       price_per_person: Number(data.price),
       venue: data.venue,
       age: Number(data.age),
-      timings: value._d,
-      day: day._d,
+      timings: time,
+      day: sday,
       sport: sport.label,
       location: {
         type: "Point",
@@ -57,18 +83,131 @@ function CreateEvent(props) {
       duration: duration.label,
       additionalAddressInfo: additionalAddressInfo,
     };
-    addMyEvent(event);
+    setEventDet(event)
+    setOpenModal(true)
+    //addMyEvent(event);
   };
   const [sport, setSport] = React.useState(sports[0]);
   const [value, setValue] = React.useState(new Date());
   const [day, setDay] = React.useState(new Date());
   const [district, setDistrict] = React.useState("Mumbai");
-  const [duration, setDuration] = React.useState("1 hour");
+  const [duration, setDuration] = React.useState("");
   const [locality, setLocality] = React.useState("");
   const [places, setPlaces] = React.useState([]);
   const [place, setPlace] = React.useState({});
   const [token, setToken] = React.useState("");
   const [additionalAddressInfo, setAdditionalAddressInfo] = React.useState("");
+  const [openModal, setOpenModal] = React.useState(false);
+  const [eventDet, setEventDet] = React.useState({})
+
+  const closeModal = () => {
+    setOpenModal(false)
+  }
+
+  function isInt(value) {
+    return (
+      !isNaN(value) &&
+      parseInt(Number(value)) == value &&
+      !isNaN(parseInt(value, 10))
+    );
+  }
+
+  const createEventValidation = (remPlayers, totalPlayers, age, price) => {
+    var sday;
+    var time;
+    if (day._d) {
+      sday = day._d;
+    } else {
+      sday = day;
+    }
+    if (value._d) {
+      time = value._d;
+    } else {
+      time = value;
+    }
+    sday.setHours(time.getHours());
+    sday.setMinutes(time.getMinutes());
+    if (!isInt(remPlayers) || !isInt(totalPlayers)) {
+      toast.error("Remaining Players and Total Players must be Integer !", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return false;
+    } else if (!isInt(age)) {
+      toast.error("Age must be Integer !", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } else if (!isInt(price)) {
+      toast.error("Price must be Integer !", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } else if (sday < new Date()) {
+      toast.error("Event must start in future !", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return false;
+    } else if (!duration) {
+      toast.error("Select Duration !", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return false;
+    } else if (Number(remPlayers) >= Number(totalPlayers)) {
+      toast.error("Remaining Players Cannot Be Greater Than Total Players !", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return false;
+    } else if (!place.geometry) {
+      toast.error("Select a locality / landmark from dropdown", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  const history = useHistory()
 
   const addMyEvent = async (event) => {
     var playerToken = localStorage.getItem("playerToken");
@@ -80,6 +219,16 @@ function CreateEvent(props) {
       .post(`${api}/event/create`, event, config)
       .then((res) => {
         console.log(res.data);
+        toast.success('Event Created ', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        closeModal()
+        history.push({ pathname: "/" });
       })
       .catch((err) => {
         console.log(err);
@@ -209,6 +358,8 @@ function CreateEvent(props) {
       <div className="backgroundImageContainer">
         <img src={kick} className="kickImg" />
       </div>
+      <ToastContainer />
+      <CreateEventConfirmModal open={openModal} event={eventDet} place={place} createEvent={addMyEvent} handleClose={closeModal} />
       <Grid container marginTop="15px" marginBottom={5} marginLeft={1}>
         <Grid container spacing={2}>
           <Grid item xs={10} sm={6} md={4}>
