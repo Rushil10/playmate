@@ -28,6 +28,7 @@ import PlayerCardExtra from "../../Components/PlayerCardExtra/playerExtraInfo";
 function PlayerProfile(props) {
   const match = useParams();
   const [playerDetails, setPlayerDetails] = useState({})
+  const user = useSelector((state) => state.player.user);
   const [pieDetails, setPieDetails] = useState({});
   const [labels, setLabels] = useState([])
   const [values, setValues] = useState([])
@@ -92,9 +93,11 @@ function PlayerProfile(props) {
           <Grid item xs={12} sm={8} md={6} lg={4}>
             <PieChart label={labels1} value={values1} colors={colors} />
           </Grid>
-          <Grid item xs={12} sm={8} md={6} lg={4}>
-            <PlayerCardExtra />
-          </Grid>
+          {
+            user._id === match.id && <Grid item xs={12} sm={8} md={6} lg={4}>
+              <PlayerCardExtra />
+            </Grid>
+          }
           {/* <Grid item xs={12} sm={6} md={4}>
             <ProfileCard />
           </Grid> */}

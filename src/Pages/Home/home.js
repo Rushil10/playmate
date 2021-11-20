@@ -214,6 +214,7 @@ function Home() {
   };
 
   const handleForwardPageClick = () => {
+    console.log("Pressed")
     var p = page + 1;
     setPage(p);
     getFilterEventsNearMe(p, sport, age, gender, dateVal)

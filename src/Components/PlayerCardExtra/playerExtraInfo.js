@@ -27,27 +27,28 @@ function PlayerCardExtra(props) {
   const { height, width } = useWindowDimensions();
   const location = useLocation();
   const history = useHistory();
+  //const user = useSelector((state) => state.player.user);
   const onPressOrganized = () => {
-    if (location.pathname !== "/allorganized") {
-      history.push({ pathname: "/allorganized" });
+    if (location.pathname !== "/allOrganized") {
+      history.push({ pathname: "/allOrganized" });
     }
   };
 
   const onPressJoined = () => {
-    if (location.pathname !== "/alljoined") {
-      history.push({ pathname: "/alljoined" });
+    if (location.pathname !== "/allJoined") {
+      history.push({ pathname: "/allJoined" });
     }
   };
 
   const onPressBackedOut = () => {
-    if (location.pathname !== "/allbackedOut") {
-      history.push({ pathname: "/allbackedOut" });
+    if (location.pathname !== "/allBackedOut") {
+      history.push({ pathname: "/allBackedOut" });
     }
   };
 
   const onPressRejected = () => {
-    if (location.pathname !== "/allrejected") {
-      history.push({ pathname: "/allrejected" });
+    if (location.pathname !== "/allRejected") {
+      history.push({ pathname: "/allRejected" });
     }
   };
   return (
