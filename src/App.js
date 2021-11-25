@@ -36,7 +36,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const appCheck = initializeAppCheck(app, {
-  provider: new ReCaptchaV3Provider('abcdefghijklmnopqrstuvwxy-1234567890abcd'),
+  provider: new ReCaptchaV3Provider('6Ldp4FodAAAAAKUxTwqt-1rsvozBKhP8V36NjPDC'),
 
   // Optional argument. If true, the SDK automatically refreshes App Check
   // tokens as needed.
