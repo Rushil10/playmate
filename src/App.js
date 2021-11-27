@@ -24,12 +24,12 @@ import AllBackedOutEvents from "./Components/AllBackedOutEvents/allBackedOutEven
 import AllRejectedEvents from "./Components/AllRejectedEvents/AllRejectedEvents";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBlz4RUWLWoNRcoqwSXtZCZtvpABQ6eY-k",
-  authDomain: "playmate-29949.firebaseapp.com",
-  projectId: "playmate-29949",
-  storageBucket: "playmate-29949.appspot.com",
-  messagingSenderId: "616087980787",
-  appId: "1:616087980787:web:3d9110379df7d776268586",
+  apiKey: "AIzaSyAnYnbHmFe2xXZEwtmVAokUxtooq3WnfVU",
+  authDomain: "playmate-e51a6.firebaseapp.com",
+  projectId: "playmate-e51a6",
+  storageBucket: "playmate-e51a6.appspot.com",
+  messagingSenderId: "67487967811",
+  appId: "1:67487967811:web:d47a13d2ed38bf686302f6"
 };
 
 // Initialize Firebase
