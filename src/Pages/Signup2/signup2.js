@@ -80,6 +80,7 @@ function Signup() {
       })
       .catch((error) => {
         console.log("Otp not sent !");
+        console.log(error);
         // Error; SMS not sent
         // ...
         setOtpLoading(false);
