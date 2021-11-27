@@ -35,7 +35,12 @@ function Signup() {
 
   const configureCaptcha = () => {
     const auth = getAuth();
-    window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', { size: 'normal' }, auth);
+    window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
+      size: 'normal',
+      callback: (res) => {
+        console.log(res, 'hmmmmmmmmm')
+      }
+    }, auth);
   };
 
   useEffect(() => {
