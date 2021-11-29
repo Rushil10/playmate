@@ -17,6 +17,8 @@ import OrganizedEventCard from "../../Components/OrganizedEventCard/OrganizedEve
 import PlayerCard from "../../Components/PlayerCard/playerCard";
 import api from "../../config/api";
 import { useSelector } from "react-redux";
+import EventCard from "../../Components/EventCard/EventCard";
+import loadingGif from '../../images/loading.gif'
 
 function EventDetails() {
   const match = useParams();
@@ -36,6 +38,7 @@ function EventDetails() {
       .then((res) => {
         console.log(res);
         setEventDetails(res.data.event);
+        console.log(res.data.event)
         if (user._id && res.data.event.organiserId === user._id) {
           setIsOrganiser(true);
         }
@@ -76,100 +79,114 @@ function EventDetails() {
 
   return (
     <Grid container paddingLeft="15px" paddingRight="15px" paddingBottom="15px" spacing={2}>
-      <Grid item xs={12} sm={8} md={9.5} order={{ xs: 2, sm: 1 }}>
-        <Grid container>
-          <Paper
-            elevation={0}
-            style={{
-              marginTop: 15,
-              width: "100%",
-              overflow: "auto",
-              borderBottomWidth: 0,
-            }}
-          >
-            <EventDetailsCard item={eventDetails} />
-            {/* <Typography style={{ marginTop: 5 }} >Organiser Contact : +91 {eventDetails.organiserContact}</Typography> */}
-          </Paper>
-        </Grid>
-        <Grid container>
-          <Typography variant="h6" style={{ marginTop: 5 }} >Organiser</Typography>
-          <JoinedPlayerCard
-            eventId={match.id}
-            event={eventDetails}
-            item={organiserDetails}
-            index={0}
-            reject={false}
-            backoutPlayer={true}
-            organiser={false}
-            updateOnPlayerRemoval={updateOnPlayerRemoval}
-          />
-        </Grid>
-        <Grid container>
-          <Grid item marginTop="9px">
-            <Typography variant="h6">Joined Players</Typography>
-          </Grid>
-        </Grid>
-        <Grid container>
-          {players.map((player, index) => (
-            <JoinedPlayerCard
-              eventId={match.id}
-              event={eventDetails}
-              item={player}
-              index={index}
-              reject={false}
-              backoutPlayer={false}
-              organiser={isOrganiser}
-              updateOnPlayerRemoval={updateOnPlayerRemoval}
-            />
-          ))}
-        </Grid>
-        {
-          isOrganiser && bplayers.length > 0 &&
-          <>
+      {
+        !loading ?
+          <Grid item xs={12} sm={8} md={9.5} order={{ xs: 2, sm: 1 }}>
+            <Grid container>
+              <Paper
+                elevation={0}
+                style={{
+                  marginTop: 15,
+                  width: "100%",
+                  overflow: "auto",
+                  borderBottomWidth: 0,
+                }}
+              >
+                {
+                  !loading && user._id && ((eventDetails.joinedPlayers.includes(user._id) || isOrganiser) ? <EventDetailsCard item={eventDetails} /> :
+                    <EventCard item={eventDetails} index={0} onPressBook={getEventDetails} />
+                  )
+                }
+                {/* <EventCard item={eventDetails} index={0} onPressBook={getEventDetails} />
+            <EventDetailsCard item={eventDetails} /> */}
+                {/* <Typography style={{ marginTop: 5 }} >Organiser Contact : +91 {eventDetails.organiserContact}</Typography> */}
+              </Paper>
+            </Grid>
+            <Grid container>
+              <Typography variant="h6" style={{ marginTop: 5 }} >Organiser</Typography>
+              <JoinedPlayerCard
+                eventId={match.id}
+                event={eventDetails}
+                item={organiserDetails}
+                index={0}
+                reject={false}
+                backoutPlayer={true}
+                organiser={false}
+                updateOnPlayerRemoval={updateOnPlayerRemoval}
+              />
+            </Grid>
             <Grid container>
               <Grid item marginTop="9px">
-                <Typography variant="h6">Backed Out Players</Typography>
+                <Typography variant="h6">Joined Players</Typography>
               </Grid>
             </Grid>
             <Grid container>
-              {bplayers.map((player, index) => (
+              {players.map((player, index) => (
                 <JoinedPlayerCard
                   eventId={match.id}
+                  event={eventDetails}
                   item={player}
                   index={index}
-                  backoutPlayer={true}
-                  event={eventDetails}
                   reject={false}
-                  organiser={isOrganiser}
-                  updateOnPlayerRemoval={updateOnPlayerRemoval}
-                />
-              ))}
-            </Grid>
-          </>
-        }
-        {
-          isOrganiser && cplayers.length > 0 && <>
-            <Grid container>
-              <Grid item marginTop="9px">
-                <Typography variant="h6">Rejected Players</Typography>
-              </Grid>
-            </Grid>
-            <Grid container>
-              {cplayers.map((player, index) => (
-                <JoinedPlayerCard
-                  eventId={match.id}
-                  item={player}
-                  index={index}
-                  reject={true}
                   backoutPlayer={false}
-                  event={eventDetails}
                   organiser={isOrganiser}
                   updateOnPlayerRemoval={updateOnPlayerRemoval}
                 />
               ))}
-            </Grid></>
-        }
-      </Grid>
+            </Grid>
+            {
+              isOrganiser && bplayers.length > 0 &&
+              <>
+                <Grid container>
+                  <Grid item marginTop="9px">
+                    <Typography variant="h6">Backed Out Players</Typography>
+                  </Grid>
+                </Grid>
+                <Grid container>
+                  {bplayers.map((player, index) => (
+                    <JoinedPlayerCard
+                      eventId={match.id}
+                      item={player}
+                      index={index}
+                      backoutPlayer={true}
+                      event={eventDetails}
+                      reject={false}
+                      organiser={isOrganiser}
+                      updateOnPlayerRemoval={updateOnPlayerRemoval}
+                    />
+                  ))}
+                </Grid>
+              </>
+            }
+            {
+              isOrganiser && cplayers.length > 0 && <>
+                <Grid container>
+                  <Grid item marginTop="9px">
+                    <Typography variant="h6">Rejected Players</Typography>
+                  </Grid>
+                </Grid>
+                <Grid container>
+                  {cplayers.map((player, index) => (
+                    <JoinedPlayerCard
+                      eventId={match.id}
+                      item={player}
+                      index={index}
+                      reject={true}
+                      backoutPlayer={false}
+                      event={eventDetails}
+                      organiser={isOrganiser}
+                      updateOnPlayerRemoval={updateOnPlayerRemoval}
+                    />
+                  ))}
+                </Grid></>
+            }
+          </Grid>
+          :
+          <Grid item xs={12} alignItems="center" justifyContent="center" textAlign="center" sm={8} md={9.5} order={{ xs: 2, sm: 1 }}>
+            <img src={loadingGif} alt="Loading" />
+            <Typography>Loading</Typography>
+          </Grid>
+      }
       <Grid
         marginTop="15px"
         item

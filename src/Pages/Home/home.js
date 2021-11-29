@@ -33,6 +33,8 @@ import PlayerCard from "../../Components/PlayerCard/playerCard";
 import ReactPaginate from 'react-paginate';
 import Pagination from 'rc-pagination';
 import PaginationComponent from "../../Components/PaginationComponent/pagination";
+import loadingGif from "../../images/loading.gif"
+import noevents from '../../images/noevents.jpg'
 
 function Home() {
   const [openDatePicker, setOpenDatePicker] = useState(false);
@@ -308,11 +310,27 @@ function Home() {
               borderBottomWidth: 0,
             }}
           >
-            {!loading &&
+            {!loading ?
               fetchedEvents.map((item, index) => (
                 <EventCard item={item} index={index} />
-              ))}
-            <PaginationComponent forward={handleForwardPageClick} backward={handlePageBackwardClick} page={page} />
+              ))
+              :
+              <div style={{ alignItems: 'center', justifyContent: 'center', display: 'flex', flex: 1, flexDirection: 'column' }}>
+                <img src={loadingGif} alt="Loading" />
+                <Typography>Loading Events Near You</Typography>
+              </div>}
+            {
+              !loading && fetchedEvents.length > 0 &&
+              <PaginationComponent forward={handleForwardPageClick} backward={handlePageBackwardClick} page={page} />
+            }
+            {
+              !loading && fetchedEvents.length === 0 &&
+              <div style={{ alignItems: 'center', justifyContent: 'center', display: 'flex', flex: 1, flexDirection: 'column' }}>
+                <img src={noevents} alt="No Events Near You" />
+                <Typography>No Sports Events Near You</Typography>
+                <Typography>Organise Now</Typography>
+              </div>
+            }
           </Paper>
         </Grid>
       </Grid>

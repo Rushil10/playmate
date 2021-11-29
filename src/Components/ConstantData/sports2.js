@@ -10,6 +10,11 @@ const sports = [
     value: "Cricket",
   },
   {
+    label: "Football",
+    maxPlayers: 22,
+    value: "Football",
+  },
+  {
     label: "VolleyBall",
     maxPlayers: 22,
     value: "VolleyBall",

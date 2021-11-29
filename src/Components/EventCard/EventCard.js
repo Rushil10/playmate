@@ -76,6 +76,9 @@ function EventCard(props) {
       axios
         .post(`${api}/booking/joinEvent`, body, config)
         .then((res) => {
+          if (props.onPressBook) {
+            props.onPressBook()
+          }
           console.log(res.data);
           setRemPlayers(rem_players - 1);
           handleClose()
