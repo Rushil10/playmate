@@ -326,7 +326,7 @@ function Home() {
             {
               !loading && fetchedEvents.length === 0 &&
               <div style={{ alignItems: 'center', justifyContent: 'center', display: 'flex', flex: 1, flexDirection: 'column' }}>
-                <img src={noevents} alt="No Events Near You" />
+                <img class="removeOverflowX" src={noevents} alt="No Events Near You" />
                 <Typography>No Sports Events Near You</Typography>
                 <Typography>Organise Now</Typography>
               </div>

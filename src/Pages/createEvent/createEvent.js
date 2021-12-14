@@ -503,7 +503,7 @@ function CreateEvent(props) {
                 size="small"
                 variant="outlined"
                 fullWidth
-                label="Additional Address Info (Optional)"
+                label="Additional Address Info (Google Maps Link)"
                 value={additionalAddressInfo}
                 onChange={handleChangeAdditionalAddressInfo}
               />

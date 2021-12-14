@@ -69,7 +69,13 @@ function App() {
               <Route path="/signup">
                 <Signup2 />
               </Route>
-              <ProtectedRoute path="/event/:id" component={EventDetails} />
+              <Route path="/event/:id">
+                <EventDetails />
+              </Route>
+              <Route path="/player/:name/:id">
+                <PlayerProfile />
+              </Route>
+              {/* <ProtectedRoute path="/event/:id" component={EventDetails} /> */}
               <ProtectedRoute path="/create" component={CreateEvent} />
               <ProtectedRoute path="/organized" component={OrganizedEvents} />
               <ProtectedRoute path="/allOrganized" component={AllOrganizedEvents} />
@@ -79,7 +85,7 @@ function App() {
               <ProtectedRoute path="/allBackedOut" component={AllBackedOutEvents} />
               <ProtectedRoute path="/rejected" component={RejectedEvents} />
               <ProtectedRoute path="/allRejected" component={AllRejectedEvents} />
-              <ProtectedRoute path="/player/:name/:id" component={PlayerProfile} />
+              {/* <ProtectedRoute path="/player/:name/:id" component={PlayerProfile} /> */}
             </Switch>
           </Router>
         </div>

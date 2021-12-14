@@ -93,8 +93,8 @@ function PlayerProfile(props) {
           <Grid item xs={12} sm={8} md={6} lg={4}>
             <PieChart label={labels1} value={values1} colors={colors} />
           </Grid>
-          {
-            user._id === match.id && <Grid item xs={12} sm={8} md={6} lg={4}>
+          {user._id &&
+            (user._id === match.id) && <Grid item xs={12} sm={8} md={6} lg={4}>
               <PlayerCardExtra />
             </Grid>
           }

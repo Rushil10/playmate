@@ -1,4 +1,4 @@
-import { SET_LOCATION, SET_USER } from "../types";
+import { LOGOUT_USER, SET_LOCATION, SET_USER } from "../types";
 
 const initialState = {
   user: {},
@@ -23,6 +23,12 @@ export default function (state = initialState, action) {
       return {
         ...state,
         location: action.payload
+      }
+    case LOGOUT_USER:
+      return {
+        ...state,
+        user: {},
+        authenticated: false,
       }
     default:
       return state;

@@ -19,6 +19,31 @@ import api from "../../config/api";
 import { useSelector } from "react-redux";
 import EventCard from "../../Components/EventCard/EventCard";
 import loadingGif from '../../images/loading.gif'
+import {
+  EmailShareButton,
+  FacebookIcon,
+  FacebookShareButton,
+  HatenaShareButton,
+  InstapaperShareButton,
+  LineShareButton,
+  LinkedinShareButton,
+  LivejournalShareButton,
+  MailruShareButton,
+  OKShareButton,
+  PinterestShareButton,
+  PocketShareButton,
+  RedditShareButton,
+  TelegramIcon,
+  TelegramShareButton,
+  TumblrShareButton,
+  TwitterIcon,
+  TwitterShareButton,
+  ViberShareButton,
+  VKShareButton,
+  WhatsappIcon,
+  WhatsappShareButton,
+  WorkplaceShareButton
+} from "react-share";
 
 function EventDetails() {
   const match = useParams();
@@ -29,6 +54,7 @@ function EventDetails() {
   const [cplayers, setCPlayers] = useState([]);
   const [isOrganiser, setIsOrganiser] = useState(false);
   const [organiserDetails, setorganiserDetails] = useState({})
+  const [shareUrl, setShareUrl] = useState(window.location.href)
   const user = useSelector((state) => state.player.user);
   const getEventDetails = () => {
     setLoading(true);
@@ -93,7 +119,7 @@ function EventDetails() {
                 }}
               >
                 {
-                  !loading && user._id && ((eventDetails.joinedPlayers.includes(user._id) || isOrganiser) ? <EventDetailsCard item={eventDetails} /> :
+                  !loading && ((eventDetails.joinedPlayers.includes(user._id) || isOrganiser) ? <EventDetailsCard item={eventDetails} /> :
                     <EventCard item={eventDetails} index={0} onPressBook={getEventDetails} />
                   )
                 }
@@ -101,6 +127,40 @@ function EventDetails() {
             <EventDetailsCard item={eventDetails} /> */}
                 {/* <Typography style={{ marginTop: 5 }} >Organiser Contact : +91 {eventDetails.organiserContact}</Typography> */}
               </Paper>
+            </Grid>
+            <Grid container spacing={1} marginTop="5px">
+              <Grid item>
+                <WhatsappShareButton
+                  url={shareUrl}
+                  title={`Join ${eventDetails.sport} event to confirm your spot.`}
+                  separator="   "
+                >
+                  <WhatsappIcon size={32} round />
+                </WhatsappShareButton>
+              </Grid>
+              <Grid item>
+                <TwitterShareButton
+                  url={shareUrl}
+                  title={`Join ${eventDetails.sport} event to confirm your spot.`}
+                >
+                  <TwitterIcon size={32} round />
+                </TwitterShareButton>
+              </Grid>
+              <Grid item>
+                <FacebookShareButton
+                  url={shareUrl}
+                  title={`Join ${eventDetails.sport} event to confirm your spot.`}
+                >
+                  <FacebookIcon size={32} round />
+                </FacebookShareButton>
+              </Grid>
+              <Grid item>
+                <TelegramShareButton url={shareUrl}
+                  title={`Join ${eventDetails.sport} event to confirm your spot.`}
+                >
+                  <TelegramIcon size={32} round />
+                </TelegramShareButton>
+              </Grid>
             </Grid>
             <Grid container>
               <Typography variant="h6" style={{ marginTop: 5 }} >Organiser</Typography>

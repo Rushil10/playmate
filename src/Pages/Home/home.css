@@ -53,6 +53,12 @@
   }
 }
 
+@media screen and (max-width: 590px) {
+  .removeOverflowX {
+    max-width: 375px;
+  }
+}
+
 .sticky {
   position: -webkit-sticky;
   position: sticky;

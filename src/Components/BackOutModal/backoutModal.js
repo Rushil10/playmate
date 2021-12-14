@@ -51,7 +51,9 @@ function BackoutModal(props) {
       >
         <Grid
           item
-          xs={6}
+          xs={12}
+          sm={8}
+          md={6}
           backgroundColor="white"
           borderRadius="20px"
           padding="15px"
