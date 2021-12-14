@@ -24,6 +24,8 @@ import AllBackedOutEvents from "./Components/AllBackedOutEvents/allBackedOutEven
 import AllRejectedEvents from "./Components/AllRejectedEvents/AllRejectedEvents";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { onBackgroundMessage } from "firebase/messaging/sw";
+import axios from "axios";
+import api from "./config/api";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAnYnbHmFe2xXZEwtmVAokUxtooq3WnfVU",
@@ -43,11 +45,40 @@ if (token) {
   store.dispatch(setPlayerData(token));
 }
 
+const sendFcmToken = async (token) => {
+  var body = {
+    fcmToken: token
+  }
+  const playerToken = localStorage.playerToken;
+  if (playerToken) {
+    var config = {
+      headers: { Authorization: `Bearer ${playerToken}` },
+      "Content-Type": "application/json",
+    };
+    axios.post(`${api}/player/webFcmToken`, body, config).then(res => {
+      console.log(res.data);
+    }).catch(err => {
+      console.log(err.response)
+    })
+    var body2 = {
+      title: 'Testtt',
+      body: 'Hmmm',
+      fcmToken: playerToken
+    }
+    axios.post(`${api}/player/notify`, body2).then(res => {
+      //console.log(res.data);
+    }).catch(err => {
+      console.log(err.response)
+    })
+  }
+}
+
 const messaging = getMessaging();
 getToken(messaging, { vapidKey: 'BMOuBQrCRXIjk_WcLJfbgAjPk4BlXTA1MEcENcSgsaqljXO3zgXgiiiBvC_S-zmWoulyULYHOF_J136Md-TCzNw' }).then((currentToken) => {
   if (currentToken) {
     // Send the token to your server and update the UI if necessary
     console.log(currentToken)
+    sendFcmToken(currentToken)
     // ...
   } else {
     // Show permission request UI
