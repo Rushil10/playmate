@@ -22,6 +22,8 @@ import AllOrganizedEvents from "./Pages/AllOrganizedEvents/allOrganizedEvents";
 import AllJoinedEvents from "./Pages/AllJoinedEvents/allJoinedEvents";
 import AllBackedOutEvents from "./Components/AllBackedOutEvents/allBackedOutEvents";
 import AllRejectedEvents from "./Components/AllRejectedEvents/AllRejectedEvents";
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { onBackgroundMessage } from "firebase/messaging/sw";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAnYnbHmFe2xXZEwtmVAokUxtooq3WnfVU",
@@ -40,6 +42,39 @@ const token = localStorage.playerToken;
 if (token) {
   store.dispatch(setPlayerData(token));
 }
+
+const messaging = getMessaging();
+getToken(messaging, { vapidKey: 'BMOuBQrCRXIjk_WcLJfbgAjPk4BlXTA1MEcENcSgsaqljXO3zgXgiiiBvC_S-zmWoulyULYHOF_J136Md-TCzNw' }).then((currentToken) => {
+  if (currentToken) {
+    // Send the token to your server and update the UI if necessary
+    console.log(currentToken)
+    // ...
+  } else {
+    // Show permission request UI
+    console.log('No registration token available. Request permission to generate one.');
+    Notification.requestPermission()
+    // ...
+  }
+}).catch((err) => {
+  console.log('An error occurred while retrieving token. ', err);
+  // ...
+});
+
+onMessage(messaging, (payload) => {
+  console.log('Message received. ', payload.notification);
+  // ...
+  const notificationTitle = payload.notification.title;
+  const notificationOptions = {
+    body: payload.notification.body,
+    icon: "/logo192.png",
+  };
+
+  // eslint-disable-next-line no-restricted-globals
+  new Notification(
+    notificationTitle,
+    notificationOptions
+  );
+});
 
 const lat = localStorage.lat;
 if (lat) {
