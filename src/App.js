@@ -25,6 +25,7 @@ import AllRejectedEvents from "./Components/AllRejectedEvents/AllRejectedEvents"
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { onBackgroundMessage } from "firebase/messaging/sw";
 import axios from "axios";
+import logo192 from '../src/images/logo192.png'
 import api from "./config/api";
 
 const firebaseConfig = {
@@ -60,16 +61,16 @@ const sendFcmToken = async (token) => {
     }).catch(err => {
       console.log(err.response)
     })
-    var body2 = {
+    /* var body2 = {
       title: 'Testtt',
       body: 'Hmmm',
-      fcmToken: playerToken
+      fcmToken: token
     }
     axios.post(`${api}/player/notify`, body2).then(res => {
       //console.log(res.data);
     }).catch(err => {
       console.log(err.response)
-    })
+    }) */
   }
 }
 
@@ -81,7 +82,6 @@ getToken(messaging, { vapidKey: 'BMOuBQrCRXIjk_WcLJfbgAjPk4BlXTA1MEcENcSgsaqljXO
     sendFcmToken(currentToken)
     // ...
   } else {
-    // Show permission request UI
     console.log('No registration token available. Request permission to generate one.');
     Notification.requestPermission()
     // ...
@@ -97,7 +97,7 @@ onMessage(messaging, (payload) => {
   const notificationTitle = payload.notification.title;
   const notificationOptions = {
     body: payload.notification.body,
-    icon: "/logo192.png",
+    icon: logo192,
   };
 
   // eslint-disable-next-line no-restricted-globals
