@@ -136,7 +136,7 @@ function PlayerCard(props) {
                   <Button onClick={goToSignup} variant="contained" style={{ backgroundColor: '#1da1f2' }}>Signup</Button>
                 </Grid>
                 <Grid item xs={5}>
-                  <Button variant="contained" style={{ backgroundColor: '#1da1f2' }}>Login</Button>
+                  <Button onClick={goToSignup} variant="contained" style={{ backgroundColor: '#1da1f2' }}>Login</Button>
                 </Grid>
               </Grid>
             </Grid>}
