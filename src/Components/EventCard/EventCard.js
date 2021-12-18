@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'
+import { toast, ToastContainer } from "react-toastify";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
@@ -63,6 +64,19 @@ function EventCard(props) {
   };
 
   const joinEvent = async () => {
+    if (props.item.eventStatus === "Cancelled") {
+      toast.error("Cannot Join Cancelled Event ", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      handleClose()
+      return;
+    }
     var body = {
       eventId: props.item._id,
       eventDay: props.item.day,
@@ -104,6 +118,7 @@ function EventCard(props) {
       paddingLeft="15px"
       paddingBottom="9px"
     >
+      <ToastContainer />
       <Dialog
         open={open}
         onClose={handleClose}

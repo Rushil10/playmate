@@ -68,7 +68,7 @@ _id: "617b806be6a2a45eba9860a2" */
       container
       borderRadius="15px"
       marginTop="9px"
-      border="0.5px solid #d4d4d4"
+      border={props.item.eventStatus === "Cancelled" ? "1px solid red" : "1px solid #d4d4d4"}
       padding="9px"
       paddingLeft="15px"
       paddingBottom="9px"
@@ -145,7 +145,7 @@ _id: "617b806be6a2a45eba9860a2" */
           </Typography>
         </Grid>
         <Grid item alignItems="center" textAlign="center" xs={4} md={7}>
-          <Button onClick={onPressDetails} size="small" variant="contained">
+          <Button onClick={onPressDetails} size="small" style={{ backgroundColor: props.item.eventStatus === "Cancelled" && "red" }} variant="contained">
             Details
           </Button>
         </Grid>
@@ -211,6 +211,20 @@ _id: "617b806be6a2a45eba9860a2" */
               ~ {moment(props.reject.rejectedAt).format("DD MMM   hh:mm a")}
             </Typography>
           </Grid>
+        </Grid>
+      }
+      {
+        props.item.eventStatus === "Cancelled" &&
+        <Grid container marginBottom="5px">
+          <Grid item sm={12}>
+            <Typography style={{ fontWeight: 'bold' }}>This Event has been Cancelled</Typography>
+          </Grid>
+          <Grid item sm={12}>
+            <Typography>{props.item.cancellationReason}</Typography>
+          </Grid>
+          <Typography variant="caption">
+            ~ {moment(props.item.cancelledAt).format("DD MMM   hh:mm a")}
+          </Typography>
         </Grid>
       }
     </Grid>

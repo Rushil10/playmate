@@ -44,6 +44,9 @@ import {
   WhatsappShareButton,
   WorkplaceShareButton
 } from "react-share";
+import CancelEventModal from "../../Components/CancelEventModal/CancelEventModal";
+import moment from "moment";
+import { ToastContainer } from "react-toastify";
 
 function EventDetails() {
   const match = useParams();
@@ -54,6 +57,7 @@ function EventDetails() {
   const [cplayers, setCPlayers] = useState([]);
   const [isOrganiser, setIsOrganiser] = useState(false);
   const [organiserDetails, setorganiserDetails] = useState({})
+  const [cancelEvent, setCancelEvent] = useState(false)
   const [shareUrl, setShareUrl] = useState(window.location.href)
   const user = useSelector((state) => state.player.user);
   const getEventDetails = () => {
@@ -98,6 +102,14 @@ function EventDetails() {
     setCPlayers(allCplayers);
   };
 
+  const closeCancel = () => {
+    setCancelEvent(false);
+  };
+
+  const openCancelModal = () => {
+    setCancelEvent(true);
+  };
+
   useEffect(() => {
     getEventDetails();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -108,6 +120,7 @@ function EventDetails() {
       {
         !loading ?
           <Grid item xs={12} sm={8} md={9.5} order={{ xs: 2, sm: 1 }}>
+            <CancelEventModal handleClose={closeCancel} open={cancelEvent} updateEvent={getEventDetails} event={eventDetails} />
             <Grid container>
               <Paper
                 elevation={0}
@@ -128,6 +141,21 @@ function EventDetails() {
                 {/* <Typography style={{ marginTop: 5 }} >Organiser Contact : +91 {eventDetails.organiserContact}</Typography> */}
               </Paper>
             </Grid>
+            <ToastContainer />
+            {
+              eventDetails.eventStatus === "Cancelled" &&
+              <Grid container marginTop="15px">
+                <Grid item sm={12}>
+                  <Typography style={{ fontWeight: 'bold' }}>This Event has been Cancelled</Typography>
+                </Grid>
+                <Grid item sm={12}>
+                  <Typography>{eventDetails.cancellationReason}</Typography>
+                </Grid>
+                <Typography variant="caption">
+                  ~ {moment(eventDetails.cancelledAt).format("DD MMM   hh:mm a")}
+                </Typography>
+              </Grid>
+            }
             <Grid container spacing={1} marginTop="5px">
               <Grid item>
                 <WhatsappShareButton
@@ -174,6 +202,11 @@ function EventDetails() {
                 organiser={false}
                 updateOnPlayerRemoval={updateOnPlayerRemoval}
               />
+              {
+                isOrganiser && eventDetails.eventStatus !== "Cancelled" && <Grid item marginTop="7.5px" sm={12}>
+                  <Button onClick={openCancelModal} variant="contained" size="small">Cancel Event</Button>
+                </Grid>
+              }
             </Grid>
             <Grid container>
               <Grid item marginTop="9px">

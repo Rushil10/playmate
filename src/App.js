@@ -61,16 +61,6 @@ const sendFcmToken = async (token) => {
     }).catch(err => {
       console.log(err.response)
     })
-    /* var body2 = {
-      title: 'Testtt',
-      body: 'Hmmm',
-      fcmToken: token
-    }
-    axios.post(`${api}/player/notify`, body2).then(res => {
-      //console.log(res.data);
-    }).catch(err => {
-      console.log(err.response)
-    }) */
   }
 }
 
@@ -91,7 +81,7 @@ getToken(messaging, { vapidKey: 'BMOuBQrCRXIjk_WcLJfbgAjPk4BlXTA1MEcENcSgsaqljXO
   // ...
 });
 
-onMessage(messaging, (payload) => {
+/* onMessage(messaging, (payload) => {
   console.log('Message received. ', payload.notification);
   // ...
   const notificationTitle = payload.notification.title;
@@ -105,7 +95,7 @@ onMessage(messaging, (payload) => {
     notificationTitle,
     notificationOptions
   );
-});
+}); */
 
 const lat = localStorage.lat;
 if (lat) {
