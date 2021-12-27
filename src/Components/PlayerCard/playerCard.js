@@ -27,6 +27,7 @@ import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import axios from "axios";
 import api from "../../config/api";
+import NotifyTurnOnModal from "../NotificationModal/NotificationTurnOnModal";
 
 function PlayerCard(props) {
   const { height, width } = useWindowDimensions();
@@ -97,6 +98,10 @@ function PlayerCard(props) {
     history.push({ pathname: "/signup" });
   }
 
+  const goToLogin = () => {
+    history.push({ pathname: "/login" });
+  }
+
   const sendFcmToken = async (token) => {
     var body = {
       fcmToken: token
@@ -118,6 +123,7 @@ function PlayerCard(props) {
   const messaging = getMessaging();
 
   const askForPermission = () => {
+    setNotModal(true)
     console.log("Inside asking permission");
     Notification.requestPermission().then(function (permission) {
 
@@ -139,8 +145,14 @@ function PlayerCard(props) {
     });
   }
 
+  const [notModal, setNotModal] = useState(false)
+  const closeNotModal = () => {
+    setNotModal(false)
+  }
+
   return (
     <div className="user-sticky">
+      <NotifyTurnOnModal open={notModal} handleClose={closeNotModal} />
       <Paper /* variant="outlined" */ elevation={2}>
         <Grid conatiner /* backgroundColor="rgba(42,170,138,0.05)" */>
           {authenticated ? (
@@ -182,7 +194,7 @@ function PlayerCard(props) {
                   <Button onClick={goToSignup} variant="contained" style={{ backgroundColor: '#1da1f2' }}>Signup</Button>
                 </Grid>
                 <Grid item xs={5}>
-                  <Button onClick={goToSignup} variant="contained" style={{ backgroundColor: '#1da1f2' }}>Login</Button>
+                  <Button onClick={goToLogin} variant="contained" style={{ backgroundColor: '#1da1f2' }}>Login</Button>
                 </Grid>
               </Grid>
             </Grid>}

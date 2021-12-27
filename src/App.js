@@ -27,6 +27,10 @@ import { onBackgroundMessage } from "firebase/messaging/sw";
 import axios from "axios";
 import logo192 from '../src/images/logo192.png'
 import api from "./config/api";
+import { Modal } from "@mui/material";
+import React, { useState } from 'react'
+import NotifiedModal from "./Components/NotificationReceivedModal/NotificationRecModal";
+import Login from "./Pages/Login/login";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAnYnbHmFe2xXZEwtmVAokUxtooq3WnfVU",
@@ -109,22 +113,6 @@ getToken(messaging, { vapidKey: 'BMOuBQrCRXIjk_WcLJfbgAjPk4BlXTA1MEcENcSgsaqljXO
   // ...
 });
 
-onMessage(messaging, (payload) => {
-  console.log('Message received. ', payload.notification);
-  // ...
-  const notificationTitle = payload.notification.title;
-  const notificationOptions = {
-    body: payload.notification.body,
-    icon: logo192,
-  };
-
-  // eslint-disable-next-line no-restricted-globals
-  new Notification(
-    notificationTitle,
-    notificationOptions
-  );
-});
-
 const lat = localStorage.lat;
 if (lat) {
   console.log(lat)
@@ -140,10 +128,34 @@ if (lat) {
 }
 
 function App() {
+  const [newNot, setNewNot] = useState(false)
+  const [notTile, setNotTitle] = useState('')
+  const [notBody, setNotBody] = useState('')
+  const changeNot = () => {
+    setNewNot(false)
+  }
+  onMessage(messaging, (payload) => {
+    console.log('Message received. ', payload.notification);
+    // ...
+    const notificationTitle = payload.notification.title;
+    const notificationOptions = {
+      body: payload.notification.body,
+      icon: logo192,
+    };
+    setNotTitle(notificationTitle)
+    setNotBody(payload.notification.body)
+    setNewNot(true)
+    // eslint-disable-next-line no-restricted-globals
+    /* new Notification(
+      notificationTitle,
+      notificationOptions
+    ); */
+  });
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <div className="App">
+          <NotifiedModal open={newNot} handleClose={changeNot} title={notTile} body={notBody} />
           <Router>
             <Navbar />
             <Switch>
@@ -152,6 +164,9 @@ function App() {
               </Route>
               <Route path="/signup">
                 <Signup2 />
+              </Route>
+              <Route path="/login">
+                <Login />
               </Route>
               <Route path="/event/:id">
                 <EventDetails />

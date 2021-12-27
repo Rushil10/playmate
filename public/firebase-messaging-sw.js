@@ -28,6 +28,7 @@ messaging.onBackgroundMessage(function (payload) {
     const notificationOptions = {
         body: payload.notification.body,
         icon: "/logo192.png",
+        tag: "notification-1"
     };
 
     // eslint-disable-next-line no-restricted-globals
