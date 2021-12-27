@@ -65,6 +65,34 @@ const sendFcmToken = async (token) => {
 }
 
 const messaging = getMessaging();
+
+const askForPermission = () => {
+  console.log("Inside asking permission");
+  Notification.requestPermission().then(function (permission) {
+
+    getToken(messaging, { vapidKey: 'BMOuBQrCRXIjk_WcLJfbgAjPk4BlXTA1MEcENcSgsaqljXO3zgXgiiiBvC_S-zmWoulyULYHOF_J136Md-TCzNw' }).then((currentToken) => {
+      if (currentToken) {
+        // Send the token to your server and update the UI if necessary
+        console.log(currentToken)
+        sendFcmToken(currentToken)
+        // ...
+      } else {
+        console.log('No registration token available. Request permission to generate one.');
+        Notification.requestPermission()
+        // ...
+      }
+    }).catch((err) => {
+      console.log('An error occurred while retrieving token. ', err);
+      // ...
+    });
+  });
+}
+
+if (Notification.permission !== "granted") {
+  //navigator.permissions.query({ name: 'push', userVisibleOnly: true })
+  askForPermission()
+}
+
 getToken(messaging, { vapidKey: 'BMOuBQrCRXIjk_WcLJfbgAjPk4BlXTA1MEcENcSgsaqljXO3zgXgiiiBvC_S-zmWoulyULYHOF_J136Md-TCzNw' }).then((currentToken) => {
   if (currentToken) {
     // Send the token to your server and update the UI if necessary
@@ -81,7 +109,7 @@ getToken(messaging, { vapidKey: 'BMOuBQrCRXIjk_WcLJfbgAjPk4BlXTA1MEcENcSgsaqljXO
   // ...
 });
 
-/* onMessage(messaging, (payload) => {
+onMessage(messaging, (payload) => {
   console.log('Message received. ', payload.notification);
   // ...
   const notificationTitle = payload.notification.title;
@@ -95,7 +123,7 @@ getToken(messaging, { vapidKey: 'BMOuBQrCRXIjk_WcLJfbgAjPk4BlXTA1MEcENcSgsaqljXO
     notificationTitle,
     notificationOptions
   );
-}); */
+});
 
 const lat = localStorage.lat;
 if (lat) {
